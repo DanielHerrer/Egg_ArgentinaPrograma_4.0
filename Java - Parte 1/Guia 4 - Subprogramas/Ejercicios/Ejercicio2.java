@@ -4,7 +4,6 @@
 // Después de cada persona, el programa debe preguntarle al usuario si quiere seguir 
 // mostrando personas y frenar cuando el usuario ingrese la palabra “No”.
 
-package Ejercicios;
 import java.util.Scanner;
 
 public class Ejercicio2 {

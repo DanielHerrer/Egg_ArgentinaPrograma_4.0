@@ -3,7 +3,6 @@
 // restar, multiplicar y dividir. La aplicación debe tener una función para cada operación matemática 
 // y deben devolver sus resultados para imprimirlos en el main. 
 
-package Ejercicios;
 import java.util.Scanner;
 
 public class Ejercicio1 {

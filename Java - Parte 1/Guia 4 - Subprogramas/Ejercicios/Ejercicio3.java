@@ -8,7 +8,6 @@
 // II. * 1.28611 $ es un 1 €
 // III. * 129.852 yenes es un 1 €
 
-package Ejercicios;
 import java.util.Scanner;
 
 public class Ejercicio3 {
