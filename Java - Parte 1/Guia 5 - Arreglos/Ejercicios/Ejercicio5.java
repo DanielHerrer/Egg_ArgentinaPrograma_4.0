@@ -10,20 +10,23 @@ public class Ejercicio5 {
         Scanner in = new Scanner(System.in);
         int[][] matriz=new int[3][3];
         int cont=0;
+        
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                System.out.println("Escribe un valor para la matriz");
+                System.out.println("Escribe un valor para la matriz: ");
                 int num = in.nextInt();
                 matriz[i][j]=num;
             }
         }
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if(matriz[i][j]==-matriz[j][i]){
+                if(matriz[i][j] == -matriz[j][i]){ // COMPARA LA MATRIZ POSITIVA Y UNA MATRIZ NEGATIVA
                     cont++;
                 }
             }
         }
+
         if(cont == 9){
             System.out.println("La matriz es antisimetrica.");
         }else{

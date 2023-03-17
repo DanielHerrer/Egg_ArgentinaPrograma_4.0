@@ -7,10 +7,12 @@ public class Ejercicio1{
         int [] vector;
         vector = new int[100];
     
-        for (int i = 99; i < -1; i--) {
-            vector[i] = i;
-            System.out.println("[" + vector[i] + "]");
+        for (int i=0; i<vector.length; i++) {
+            vector[i] = i+1;
         }
 
-   }
+        for (int i=vector.length-1; i>=0; i--) {
+            System.out.println("[" + vector[i] + "]");
+        }
+    }
 }
