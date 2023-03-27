@@ -21,12 +21,12 @@ public class Circunferencia {
     }
 
     public double area(){
-        double area = Math.pow((3.14 * radio),2); // Math.pow(6,2); = 6 elevado al cuadrado  
+        double area = Math.pow((Math.PI * radio),2); // Math.pow(6,2); = 6 elevado al cuadrado  
         return area;
     }
 
     public double perimetro(){
-        double perimetro = 2 * 3.14 * radio;
+        double perimetro = 2 * Math.PI * radio;
         return perimetro;
     }
 
