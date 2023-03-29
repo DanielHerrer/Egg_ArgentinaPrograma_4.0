@@ -21,7 +21,7 @@ public class Circunferencia {
     }
 
     public double area(){
-        double area = Math.pow((Math.PI * radio),2); // Math.pow(6,2); = 6 elevado al cuadrado  
+        double area = Math.PI * Math.pow(radio,2); // Math.pow(6,2); = 6 elevado al cuadrado  
         return area;
     }
 

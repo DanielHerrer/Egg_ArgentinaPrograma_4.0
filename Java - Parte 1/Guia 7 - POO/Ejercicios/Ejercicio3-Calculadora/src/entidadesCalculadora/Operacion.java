@@ -40,12 +40,12 @@ public class Operacion {
         }
     }
 
-    public int dividir(){
+    public double dividir(){
         if(num1 < 1 || num2 < 1){
             System.out.println("Error en la division");
             return 0;
         }else{
-            return num1 / num2;
+            return (double) num1 / num2;
         }
     }
 
