@@ -1,4 +1,6 @@
-//nombre, edad, sexo (‘H’ para hombre, ‘M’ para mujer, ‘O’ para otro), peso y altura.
+// nombre, edad, sexo (‘H’ para hombre, ‘M’ para mujer, ‘O’ para otro), peso y altura.
+// colorOjos añadido extra
+
 package entities;
 
 public class Persona{

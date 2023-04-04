@@ -1,7 +1,3 @@
-import java.util.Scanner;
-
-import services.PersonaServicio;
-
 /// EJERCICIO 3 Persona  Daniel F. Herrera
 // Realizar una clase llamada Persona en el paquete de entidades que tengan los siguientes atributos: 
 // nombre, edad, sexo (‘H’ para hombre, ‘M’ para mujer, ‘O’ para otro), peso y altura. Si desea añadir 
@@ -28,6 +24,7 @@ import services.PersonaServicio;
 // variables(arrays), para después calcular un porcentaje de esas 4 personas cuantas están por debajo 
 // de su peso, cuantas en su peso ideal y cuantos, por encima, y también calcularemos un porcentaje
 //  de cuantos son mayores de edad y cuantos menores. Para esto, podemos crear unos métodos adicionales.
+
 import entities.Persona;
 import services.PersonaServicio;
 
@@ -60,10 +57,10 @@ public class App {
             }
         }
 
-        System.out.println(mayores + ", "+ menores);
-
         System.out.println("El porcentaje de menores: "+((menores/listaEdad.length)*100));
         System.out.println("El porcentaje de mayores: "+((mayores/listaEdad.length)*100));
+
+        ////////////////////////////////////////////////////////////////////////////////////////
 
         listaPeso[0] = ps.calcularIMC(p1);
         listaPeso[1] = ps.calcularIMC(p2);
@@ -85,23 +82,9 @@ public class App {
             }
         }
 
-        System.out.println(bajoPeso+", "+promedioPeso+", "+sobrePeso);
-
-        System.out.print("IMC: ");
-        for(int imc: listaPeso){
-            System.out.print(imc+", ");
-        }
-        System.out.println("");
-
-        System.out.print("Edad: ");
-        for(boolean siEs: listaEdad){
-            System.out.print(siEs+", ");
-        }
-        System.out.println("");
-
-        System.out.println("El porcentaje de sobrepeso: "+ (((double)(sobrePeso)/4)*100)) ;
-        System.out.println("El porcentaje de peso promedio: "+(((double)(promedioPeso)/4)*100));
-        System.out.println("El porcentaje de bajo peso: "+(((double)(bajoPeso)/4)*100));
+        System.out.println("El porcentaje de sobrepeso: "+ (((double)(sobrePeso)/listaPeso.length)*100)) ;
+        System.out.println("El porcentaje de peso promedio: "+(((double)(promedioPeso)/listaPeso.length)*100));
+        System.out.println("El porcentaje de bajo peso: "+(((double)(bajoPeso)/listaPeso.length)*100));
     
     }
 }
