@@ -43,7 +43,7 @@ public class RaicesServicios {
     }
 
     public Boolean tieneRaices(Raices r){
-        if(getDiscriminante(r)>=0){
+        if(getDiscriminante(r)>0){
             return true;
         }else{
             return false;
@@ -68,8 +68,8 @@ public class RaicesServicios {
 
     // (-b / √((b^2)-(4*a*c)))/(2*a)
     public void obtenerRaiz(Raices r){
-        double x1 = (-r.getB() / Math.sqrt((Math.pow(r.getB(),2))-(4*r.getA()*r.getC())))/(2*r.getA());
-        System.out.println("(-b / √((b^2)-(4*a*c)))/(2*a) = "+x1);             
+        double x1 = (-r.getB() + Math.sqrt((Math.pow(r.getB(),2))-(4*r.getA()*r.getC())))/(2*r.getA());
+        System.out.println("(-b + √((b^2)-(4*a*c)))/(2*a) = "+x1);             
     }
 
     public void calcular(Raices r){
