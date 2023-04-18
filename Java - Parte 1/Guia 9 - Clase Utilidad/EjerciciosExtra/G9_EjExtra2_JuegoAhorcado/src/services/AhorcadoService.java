@@ -22,11 +22,12 @@ public class AhorcadoService {
     
     private Scanner read = new Scanner(System.in);
     private Scanner readNum = new Scanner(System.in);
+    
 
     public Ahorcado crearJuego(){
         System.out.print("Ingrese la palabra secreta => ");
         String palabra = read.nextLine();
-        System.out.println("Ingrese num. de intentos maximo => ");
+        System.out.print("Ingrese num. de intentos maximo => ");
         int intentosMax = readNum.nextInt();
         return new Ahorcado(palabra, intentosMax);
     }
@@ -38,7 +39,7 @@ public class AhorcadoService {
             do{
                 System.out.print("Ingrese una letra => ");
                 letra = read.nextLine();
-            }while(letra.length()>1);
+            }while(letra.length()>1 || letraYaIngresada(letra, a)); // AL USAR 'letraYaIngresada()' LA ESTAMOS LLAMANDO, Y SI LA LETRA ACTUAL NO FUE INGRESADA PREVIAMENTE, SE AGREGA A LA LISTA
             // ACTUALIZA LAS LETRAS QUE SE ENCONTRARON, Y SINO SE ENCONTRARON SE PIERDE UN INTENTO
             encontradas(letra, a);
             // SI LAS LETRAS ENCONTRADAS ES IGUAL A LA LONGITUD DE LA PALABRA EL USUARIO GANA
@@ -53,15 +54,58 @@ public class AhorcadoService {
         }
     }
 
+    // FUNCION AGREGADA EXTRA
+    public Boolean letraYaIngresada(String letra, Ahorcado a){
+        Boolean encontrado = false;
+        // RECORRE LA LISTA DE LETRAS INGRESADAS PARA CORROBORAR SI LA LETRA ACTUAL YA EXISTE DENTRO
+        for(String l: a.getLetrasIngresadas()){
+            if(l != null){
+                if(letra.toLowerCase().equals(l.toLowerCase())){
+                    encontrado = true;
+                    System.out.println("La letra ya fue ingresada anteriormente.");
+                }
+            }
+        }
+        // SI NO SE ENCONTRO LA LETRA ACTUAL QUIERE DECIR QUE ES UNA LETRA NUEVA, POR ENDE SE AGREGA A LA LISTA
+        if(encontrado == false){
+            for(int i=0; i<a.getLetrasIngresadas().length; i++){
+                if(a.getLetrasIngresadas()[i] == null){
+                    a.getLetrasIngresadas()[i] = letra;
+                    break;
+                }
+            }
+        }
+        return encontrado;
+    }
+
+    // FUNCION AGREGADA EXTRA
+    public String progresoJuego(Ahorcado a){
+        String cadena = "";
+        for(String l: a.getPalabraSecreta()){
+            Boolean letraExistente = false;
+            for(String li: a.getLetrasIngresadas()){
+                if(li != null){
+                    if(l.toLowerCase().equals(li.toLowerCase())){
+                        cadena += (l.toUpperCase()+" ");
+                        letraExistente = true;
+                    }
+                }
+            }
+            if(letraExistente==false){
+                cadena += "_ ";
+            }
+        }
+        return cadena;
+    }
+
     public int longitud(Ahorcado a){
         return a.getPalabraSecreta().length;
-
     }
 
     public Boolean buscar(String letra, Ahorcado a){
         Boolean encontrado = false;
         for(String l: a.getPalabraSecreta()){
-            if(letra.equals(l)){
+            if(letra.toLowerCase().equals(l.toLowerCase())){
                 encontrado = true;
             }
         }
@@ -72,13 +116,13 @@ public class AhorcadoService {
         int vecesEncontrado = 0;
         if(buscar(letra,a)){
             for(int i=0; i<longitud(a); i++){
-                if(letra.equals(a.getPalabraSecreta()[i])){
+                if(letra.toLowerCase().equals(a.getPalabraSecreta()[i].toLowerCase())){
                     vecesEncontrado++;
                 }
             }
             a.setLetrasEncontradas(a.getLetrasEncontradas()+vecesEncontrado);   // ACTUALIZA LAS LETRAS ENCONTRADAS
             System.out.println("Has descubierto "+vecesEncontrado+" letras secretas, te faltan "+
-                (longitud(a) - a.getLetrasEncontradas()));
+                (longitud(a) - a.getLetrasEncontradas())+"  ||  "+progresoJuego(a));
         }else{
             a.setIntentosRestantes(intentos(a)-1); // SI FALLA, ACTUALIZA LOS INTENTOS RESTANTES
             System.out.println("Has fallado, INTENTOS RESTANTES = "+intentos(a));

@@ -10,6 +10,7 @@ public class Ahorcado{
     private int letraVecesEncontrada;
     private int intentosRestantes;
     private int cantidadJugadasMaxima; // 2 piernas, 2 brazos, un torso, una cabeza
+    private String[] letrasIngresadas = new String[27]; // 27 abecedario español
 
     public Ahorcado(String palabra, int intentosMax){
         letraVecesEncontrada = 0;
@@ -59,6 +60,14 @@ public class Ahorcado{
 
     public void setCantidadJugadasMaxima(int cantidadJugadasMaxima) {
         this.cantidadJugadasMaxima = cantidadJugadasMaxima;
+    }
+
+    public String[] getLetrasIngresadas() {
+        return letrasIngresadas;
+    }
+
+    public void setLetrasIngresadas(String[] letrasIngresadas) {
+        this.letrasIngresadas = letrasIngresadas;
     }
 
     
