@@ -1,0 +1,18 @@
+Clase Integer
+Escribe un programa que determine si un número entero es un número primo.
+Escribe un programa que determine si un número entero es un número perfecto (es decir, la suma de sus factores propios es igual al número).
+Escribe un programa que encuentre el número entero más grande que se puede representar con n bits (donde n es un número entero que el usuario ingresa).
+Escribe un programa que encuentre todos los números primos menores o iguales a un número entero ingresado por el usuario utilizando el algoritmo del criba de Eratóstenes.
+Escribe un programa que determine el número entero más grande que es una suma de dos números primos (por ejemplo, 28 es igual a 5 + 23).
+Clase Date
+Escribe un programa que calcule el número de días que una persona ha vivido en la Tierra a partir de su fecha de nacimiento.
+Escribe un programa que calcule el tiempo transcurrido entre dos fechas, en años, meses y días.
+Escribe un programa que calcule el día de la semana para una fecha determinada utilizando el algoritmo de Zeller.
+Escribe un programa que determine el número de días que faltan para el siguiente día de pago de un trabajador a partir de su fecha de inicio y su ciclo de pago (semanal, quincenal, mensual, etc.).
+Escribe un programa que determine la cantidad de días laborales entre dos fechas (es decir, excluyendo los fines de semana y días festivos).
+Clase Array
+Escribe un programa que encuentre la subsecuencia de suma máxima en un arreglo de números.
+Escribe un programa que determine si un arreglo de números es un arreglo cíclico (es decir, el último elemento del arreglo está conectado al primer elemento).
+Escribe un programa que encuentre los tres elementos distintos en un arreglo de números que suman a un valor determinado.
+Escribe un programa que encuentre el par de elementos distintos en un arreglo de números que suman a un valor determinado con la menor diferencia entre ellos.
+Escribe un programa que encuentre el elemento que se repite con mayor frecuencia en un arreglo de números
