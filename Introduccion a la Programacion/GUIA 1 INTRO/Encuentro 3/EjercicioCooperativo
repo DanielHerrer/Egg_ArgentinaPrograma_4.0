@@ -1,0 +1,23 @@
+Algoritmo truncMod
+	
+	Definir centena, decena, unidad Como Real
+	Definir numero3cif Como Real
+	
+	Escribir "Por favor ingrese un número de 3 cifras"
+	
+	Leer numero3cif	
+	
+	centena = trunc(numero3cif / 100)
+	decena = trunc((numero3cif - (centena * 100)) / 10) 
+	unidad = trunc((numero3cif - (centena * 100) - (decena * 10)))
+	
+	Escribir "La centena es: ", centena " La decena es: ", decena " Y la Unidad es: ", unidad
+	
+FinAlgoritmo
+
+
+///Ingrese un número de tres cifras y muestra la unidad, decena y la centena.
+///Por ejemplo, si el número ingresado por pantalla es 123 el programa debe mostrar:
+///CENTENA: 1
+///DECENA: 2
+///UNIDAD: 3
