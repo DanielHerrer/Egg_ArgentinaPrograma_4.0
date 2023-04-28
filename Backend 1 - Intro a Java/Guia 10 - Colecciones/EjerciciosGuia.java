@@ -26,6 +26,8 @@ public class EjerciciosGuia {
         numerosPares.add(12);
         numerosPares.add(24);
 
+        // Los conjuntos HashSet almacenan datos segun su codigo HASH, 
+        //   si se pretende almacenar datos en orden de inserción se debe usar LinkedHashSet
         listadoFrutas.add("Manzana");
         listadoFrutas.add("Banana");
         listadoFrutas.add("Frutilla");
@@ -76,13 +78,27 @@ public class EjerciciosGuia {
         // Este método iterator(), devuelve la colección, lo recibe el objeto Iterator 
         // y usando el objeto Iterator, podemos iterar sobre nuestra colección.
 
-        Iterator<Integer> iterator = numerosPares.iterator(); 
+        Iterator<Integer> itNum = numerosPares.iterator();
+        Iterator<String> itStr = listadoFrutas.iterator(); 
         
+        // Recorrer datos con ITERATOR
         System.out.println("Elementos de la lista: ");
-        while(iterator.hasNext()){  // hasNext(): (boolean) Retorna verdadero si al iterator le quedan elementos por iterar
-            System.out.print(iterator.next()+" ");  // next(): (Object) Devuelve el siguiente elemento en la colección, mientras el método hasNext() retorne true.
+        while(itNum.hasNext()){  // hasNext(): (boolean) Retorna verdadero si al iterator le quedan elementos por iterar
+            System.out.print(itNum.next()+" ");  // next(): (Object) Devuelve el siguiente elemento en la colección, mientras el método hasNext() retorne true.
         }
         System.out.println();
+
+        // Eliminar datos con ITERATOR
+        while(itNum.hasNext()){
+            if(itNum.next() == 6){  // si el valor actual del iterador es igual a 6, lo elimina
+                itNum.remove();
+            }
+        }
+        while(itStr.hasNext()){
+            if(itStr.next().equals("Manzana")){   // si el valor actual del iterador es igual a "Manzana", lo elimina
+                itStr.remove();
+            }
+        }
 
         /////////////////////////// COLLECTIONS.sort() ///////////////////////////
 
@@ -103,7 +119,7 @@ public class EjerciciosGuia {
 
         /////////////////////////// COMPARATOR ///////////////////////////
 
-        // Creamos un metodo Comparator dentro de nuestra Entidad
+        // Creamos un metodo Comparator dentro de nuestra Entidad Comparadores
         public static Comparator<Perro> compararEdad = new Comparator<Perro>(){
             @Override
             public int compare(Perro p1, Perro p2){
