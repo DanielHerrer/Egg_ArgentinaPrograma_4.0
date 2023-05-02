@@ -19,11 +19,34 @@ public class PaisService {
             Pais p = new Pais();
             System.out.print("Ingrese el nombre del pais => ");
             p.setNombre(read.nextLine());
-            if(listaPaises.contains(p)){
-                System.out.println("El pais ya fue ingresado anteriormente..");
-            }else{
+            if(listaPaises.isEmpty()){
+                System.out.println("Primer pais añadido!");
                 listaPaises.add(p);
+            }else{
+                Iterator<Pais> iterador = listaPaises.iterator();
+                while(iterador.hasNext()){
+                    if(iterador.next().getNombre().equalsIgnoreCase(p.getNombre())){
+                        System.out.println("El pais ya fue ingresado anteriormente..");
+                        break;
+                    }
+                    if(!iterador.hasNext()){
+                        System.out.println("Pais añadido!");
+                        listaPaises.add(p);
+                    }
+                }
+                // ELIMINADO, NO FUNCIONO
+                // for(Pais var: listaPaises){
+                //     if(p.getNombre().equalsIgnoreCase(var.getNombre())){
+                //         System.out.println("El pais ya fue ingresado anteriormente..");
+                //         break;
+                //     }else{
+                //         System.out.println("Pais añadido!");
+                //         listaPaises.add(p); 
+                //         break;
+                //     }
+                // }
             }
+            
             //--------------------------------------------------------------------------
             System.out.print("Desea salir? (s/n) => ");
             String op = read.nextLine();
