@@ -48,7 +48,7 @@ public class EjerciciosGuia {
         listadoFrutas.remove("Banana"); // Los conjuntos solo remueven por valor
         listadoFrutas.remove("Pera");
 
-        personasDni.remove(41068971,"Matias"); // Los mapas requiere llave y valor
+        personasDni.remove(41068971); // Los mapas requiere llave O llave y valor.
         personasDni.remove(41396173,"Fernando");
 
         /////////////////////////// RECORRER LISTAS, CONJUNTOS Y MAPAS ///////////////////////////
