@@ -115,7 +115,7 @@ public class EjerciciosGuia {
         // ORDENAR MAPAS:
         HashMap<Integer,String> alumnos = new HashMap<>();
         // Se convierte el HashMap a TreeMap
-        TreeMap<Integer,String> alumnosTree = new TreeMap(alumnos); // Los Tree se ordenan por si solos, automaticamente.
+        TreeMap<Integer,String> alumnosTree = new TreeMap(alumnos); // Los TreeMap se ordenan x llave por sí solos, automaticamente.
 
         /////////////////////////// COMPARATOR ///////////////////////////
 

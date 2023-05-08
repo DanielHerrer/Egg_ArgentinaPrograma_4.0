@@ -53,4 +53,4 @@ numero.
 usuario.
 • Muestra por pantalla los datos
 • Agregar una ciudad con su código postal correspondiente más al HashMap.
-• Elimina 3 ciudades existentes dentro del H
+• Elimina 3 ciudades existentes dentro del HashMap
