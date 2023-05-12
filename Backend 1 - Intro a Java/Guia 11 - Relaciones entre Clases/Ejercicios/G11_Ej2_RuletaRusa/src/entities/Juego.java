@@ -29,6 +29,7 @@ public class Juego {
             }
         }else{
             this.jugadores = jugadores;
+            System.out.println("Pasarán los "+jugadores.size()+" en la lista..");
             for(int i=0;i<jugadores.size();i++){
                 jugadores.get(i).setId(i+1);    // Setea los ID
             }
@@ -41,6 +42,7 @@ public class Juego {
             for(Jugador jugador: jugadores){
                 jugador.disparo(r);
                 if(jugador.isMojado()){
+                    System.out.println("////////////////////////////////////");
                     System.out.println("Fin del juego..");
                     fin=true;
                     break;

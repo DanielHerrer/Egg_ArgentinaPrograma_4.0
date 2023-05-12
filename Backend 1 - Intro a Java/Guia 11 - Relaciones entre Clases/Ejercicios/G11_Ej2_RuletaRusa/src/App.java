@@ -1,3 +1,4 @@
+// GUIA 11 EJERCICIO 2 - Daniel Franco Herrera
 // Realizar el juego de la ruleta rusa de agua en Java. Como muchos saben, el juego se trata de
 // un número de jugadores, que, con un revolver de agua, el cual posee una sola carga de agua,
 // se dispara y se moja. Las clases por hacer del juego son las siguientes:
@@ -17,6 +18,7 @@ public class App {
         System.out.println("Bienvenido a la ruleta rusa de agua!");
         Juego juego = new Juego();
 
+        System.out.println("////////////////////////////////////");
         ArrayList<Jugador> jugadores = new ArrayList<>();
         Boolean salir = false;
         do{
@@ -36,8 +38,9 @@ public class App {
         // System.out.println(r.toString());
         // System.out.println(jugadores.toString());
 
+        System.out.println("////////////////////////////////////");
         juego.llenarJuego(jugadores, r);            // Se llena el juego con 6 jugadores max. y el revolver cargado
-
+        System.out.println("////////////////////////////////////");
         juego.ronda();                              // Se empieza y termina el juego.
 
         read.close();
