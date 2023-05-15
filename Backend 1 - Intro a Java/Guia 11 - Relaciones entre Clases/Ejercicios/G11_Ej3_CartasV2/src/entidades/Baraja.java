@@ -23,9 +23,9 @@ import enums.Ennumeraciones.Valor;
 
 public class Baraja {
 
-    Iterator<Carta> dealer;
-    ArrayList<Carta> baraja = new ArrayList<>(40);
-    ArrayList<Carta> monton = new ArrayList<>(40);
+    private Iterator<Carta> dealer;
+    private ArrayList<Carta> baraja = new ArrayList<>(40);
+    private ArrayList<Carta> monton = new ArrayList<>(40);
 
     public Baraja(){
         for(Palo palo: Palo.values()){
