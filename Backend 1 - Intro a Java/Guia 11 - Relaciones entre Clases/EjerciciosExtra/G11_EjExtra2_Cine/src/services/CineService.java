@@ -7,7 +7,7 @@ import entities.Espectador;
 import entities.Pelicula;
 import enums.Ennumeracion.Columna;
 
-public class CineServicio {
+public class CineService {
 
     private Scanner read = new Scanner(System.in);
     
@@ -15,12 +15,9 @@ public class CineServicio {
         EspectadorService es = new EspectadorService();
         PeliculaService ps = new PeliculaService();
         Asiento[][] sala = new Asiento[8][6];
-
         Pelicula pelicula = ps.crearPelicula();
-
         System.out.print("Ingrese el precio de la entrada => ");
         Float precioEntrada = read.nextFloat();
-
         int numEspectadores = (int) ((Math.random()*48)+1); // 1 a 48 espectadores
         System.out.println("Hay un total de "+numEspectadores+" personas haciendo fila para ver "+pelicula.getTitulo()+"!");
         for(int i=0; i<numEspectadores; i++){
@@ -56,9 +53,9 @@ public class CineServicio {
         for(int i=7; i>=0; i--){
             for(int j=0; j<6; j++){
                 if(c.getSala()[i][j] == null){
-                    System.out.print(Columna.getColumnaPorPosicion(j)+(i+1)+" _ |");
+                    System.out.print(Columna.getColumnaPorPosicion(j)+(i+1)+"\u001B[32m _ \u001B[0m"+"|");
                 }else{
-                    System.out.print(Columna.getColumnaPorPosicion(j)+(i+1)+" X |");
+                    System.out.print(Columna.getColumnaPorPosicion(j)+(i+1)+"\u001B[31m X \u001B[0m"+"|");
                 }
             }
             System.out.println();

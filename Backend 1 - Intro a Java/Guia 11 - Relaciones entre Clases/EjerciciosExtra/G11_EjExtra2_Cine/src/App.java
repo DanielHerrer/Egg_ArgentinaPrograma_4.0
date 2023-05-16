@@ -24,12 +24,12 @@
 // cada asiento o solo las X y espacios vacíos.
 
 import entities.Cine;
-import services.CineServicio;
+import services.CineService;
 
 public class App {
     public static void main(String[] args) throws Exception {
         
-        CineServicio cs = new CineServicio();
+        CineService cs = new CineService();
         Cine c = cs.abrirCine();
         cs.mostrarSala(c);
 
