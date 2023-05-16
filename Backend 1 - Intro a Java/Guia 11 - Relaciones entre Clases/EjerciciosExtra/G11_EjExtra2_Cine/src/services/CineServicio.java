@@ -24,32 +24,32 @@ public class CineServicio {
         int numEspectadores = (int) ((Math.random()*48)+1); // 1 a 48 espectadores
         System.out.println("Hay un total de "+numEspectadores+" personas haciendo fila para ver "+pelicula.getTitulo()+"!");
         for(int i=0; i<numEspectadores; i++){
-            Boolean asientoAsignado = false;
-            do{
-                Espectador espectador = es.crearEspectadorAuto();
-                System.out.println("[Espectador "+(i+1)+"] "+espectador.getNombre()+" $"+espectador.getDinero());
-                if(espectador.getDinero()>=precioEntrada){
-                    System.out.println("Entrada comprada con éxito!");
-                    espectador.setDinero(espectador.getDinero()-precioEntrada);
-                    int fila, columna;
-                    String columnaStr;
-                    do{
-                        fila = (int) ((Math.random()*8));     // De 1 a 8 (filas)
-                        columna = (int) ((Math.random()*6));    // De 0 a 5 (columnas)
-                    }while(sala[fila][columna] != null);    // Mientras que el asiento[fil][col] NO este vacio
-                    columnaStr = Columna.getColumnaPorPosicion(columna); 
-                    sala[fila][columna] = new Asiento(columnaStr+String.valueOf(fila+1),espectador);  // concatena A + 1 
-                    System.out.println("Se le asignó el asiento "+columnaStr+String.valueOf(fila+1));
-                    asientoAsignado = true;
-                }else{
-                    System.out.println("Venta falló, dinero insuficiente!");
-                }
-            }while(!asientoAsignado);
+            System.out.println("-----------------------------------------");
+            Espectador espectador = es.crearEspectadorAuto();   // Se crea un espectador con valores aleatorios
+            System.out.println("[Turno nº"+(i+1)+"] "+espectador.getNombre()+" | Edad:"+espectador.getEdad()+" | $"+ Math.round(espectador.getDinero() * 100.0f) / 100.0f);
+            if(espectador.getDinero() >= precioEntrada && espectador.getEdad() >= pelicula.getEdadMin()){
+                System.out.println("Entrada comprada con éxito!");
+                espectador.setDinero(espectador.getDinero()-precioEntrada);
+                int fila, columna;
+                String columnaStr;
+                do{
+                    fila = (int) ((Math.random()*8));     // De 1 a 8 (filas)
+                    columna = (int) ((Math.random()*6));    // De 0 a 5 (columnas)
+                }while(sala[fila][columna] != null);    // Mientras que el asiento[fil][col] NO esté vacio
+                columnaStr = Columna.getColumnaPorPosicion(columna); 
+                sala[fila][columna] = new Asiento(columnaStr+String.valueOf(fila+1),espectador);  // concatena A + 1 
+                System.out.println("Se le asignó el asiento "+columnaStr+String.valueOf(fila+1));
+            }else if(espectador.getEdad() < pelicula.getEdadMin()){
+                System.out.println("Venta falló, no cumple con la edad mínima requerida..");
+            }else if(espectador.getDinero() < precioEntrada){
+                System.out.println("Venta falló, dinero insuficiente..");
+            }
         }
         return new Cine(pelicula,sala,precioEntrada);
     } 
 
     public void mostrarSala(Cine c){
+        System.out.println("-----------------------------------------");
         System.out.println("Pelicula: "+c.getPelicula().getTitulo());
         System.out.println("Precio de entrada: $"+c.getPrecioEntrada());
         System.out.println("Asientos: (Disponibles="+c.getAsientosDisp()+") (Ocupados="+c.getAsientosOcup()+")");
