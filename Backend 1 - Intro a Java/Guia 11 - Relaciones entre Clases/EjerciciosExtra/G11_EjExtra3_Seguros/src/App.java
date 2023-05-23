@@ -1,32 +1,74 @@
 // GUIA 11 EJERCICIO EXTRA 3 - Daniel Franco Herrera
+
 // Ha llegado el momento de poner de prueba tus conocimientos. Para te vamos a contar que te
 // ha contratado “La Tercera Seguros”, una empresa aseguradora que brinda a sus clientes
 // coberturas integrales para vehículos.
 // Luego de un pequeño relevamiento, te vamos a pasar en limpio los requerimientos del sistema
 // que quiere realizar la empresa.
 
-// a. Gestión Integral de clientes. En este módulo vamos a registrar la información personal de
-// cada cliente que posea pólizas en nuestra empresa. Nombre y apellido, documento, mail,
-// domicilio, teléfono.
-// b. Gestión de vehículos. Se registra la información de cada vehículo asegurado. Marca,
-// modelo, año, número de motor, chasis, color, tipo (camioneta, sedán, etc.).
-// c. Gestión de Pólizas: Se registrará una póliza, donde se guardará los datos tanto de un
-// vehículo, como los datos de un solo cliente. Los datos incluidos en ella son: número de
-// póliza, fecha de inicio y fin de la póliza, cantidad de cuotas, forma de pago, monto total
-// asegurado, incluye granizo, monto máximo granizo, tipo de cobertura (total, contra
-// terceros, etc.). Nota: prestar atención al principio de este enunciado y pensar en las
-// relaciones entre clases. Recuerden que pueden ser de uno a uno, de uno a muchos, de
-// muchos a uno o de muchos a muchos.
-// d. Gestión de cuotas: Se registrarán y podrán consultar las cuotas generadas en cada póliza.
-// Esas cuotas van a contener la siguiente información: número de cuota, monto total de la
-// cuota, si está o no pagada, fecha de vencimiento, forma de pago (efectivo, transferencia,
-// etc.).
-// Debemos realizar el diagrama de clases completo, teniendo en cuenta todos los
-// requerimientos arriba descriptos. Modelando clases con atributos y sus correspondientes
-// relaciones.
+//    Nota: prestar atención al principio de este enunciado y pensar en las
+//        relaciones entre clases. Recuerden que pueden ser de uno a uno, de uno a muchos, de
+//             muchos a uno o de muchos a muchos.
+//       Debemos realizar el diagrama de clases completo, teniendo en cuenta todos los
+//          requerimientos arriba descriptos. Modelando clases con atributos y sus correspondientes relaciones.
+
+import java.util.Scanner;
+
+import service.Service;
+
+import entities.Cliente;
+import entities.Poliza;
+import entities.Vehiculo;
 
 public class App {
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        
+        Scanner read = new Scanner(System.in);
+        Service sv = new Service();
+        Cliente cliente = null;
+        Vehiculo vehiculo = null;
+        Poliza poliza = null;
+
+        System.out.println("\u001B[36mBienvenido a La Tercera Seguros!\u001B[0m");
+
+        boolean salir = false;
+        do{
+            System.out.println("\u001B[33mMENU 'La Tercera Seguros':\u001B[0m");
+            System.out.print("1. Ingresar cliente\n2. Ingresar vehiculo\n3. Generar poliza\n4. Gestion de cuotas\n0. Salir\nIngrese opcion => ");
+            int opcion = read.nextInt();
+            read.nextLine();
+            switch(opcion){
+                case 1:
+                    cliente = sv.crearCliente();
+                    break;
+                case 2:
+                    vehiculo = sv.crearVehiculo();
+                    break;
+                case 3:
+                    if(cliente==null || vehiculo==null){
+                        System.out.println("\u001B[31mNo se pudo crear poliza\u001B[0m"); // ROJO
+                    }else{
+                        poliza = sv.crearPoliza(vehiculo, cliente);
+                    }
+                    break;
+                case 4:
+                    if(poliza==null){
+                        System.out.println("\u001B[31mGenere una poliza antes\u001B[0m"); // ROJO
+                    }else{
+                        sv.gestionCuotas(poliza);
+                    }
+                    break;
+                case 0:
+                    System.out.println("\u001B[36mFinalizando programa\u001B[0m");  // CELESTE
+                    salir = true;
+                    break;
+                default:
+                    System.out.println("\u001B[31mOpcion invalida..\u001B[0m"); // ROJO
+            }
+        }while(salir!=true);
+        
+        read.close();
     }
+
 }
