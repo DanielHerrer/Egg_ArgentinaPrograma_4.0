@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TreeMap;
@@ -11,12 +10,23 @@ import java.util.Map;
 public class EjerciciosGuia {
     public static void main(String[] args){
 
-        // LISTAS :
+    // LISTAS :
+        // ArrayList
         ArrayList<Integer> numerosPares = new ArrayList();
-        // CONJUNTOS :
+        // LinkedList
+        
+    // CONJUNTOS :
+        // HashSet
         HashSet<String> listadoFrutas = new HashSet();
-        // MAPAS :
+        // TreeSet
+        // LinkedHashSet
+        
+    // MAPAS :
+        // HashMap
         HashMap<Integer,String> personasDni = new HashMap();
+        // TreeMap
+        // LinkedHashMap
+        
 
         /////////////////////////// AÑADIR ELEMENTOS ///////////////////////////
 

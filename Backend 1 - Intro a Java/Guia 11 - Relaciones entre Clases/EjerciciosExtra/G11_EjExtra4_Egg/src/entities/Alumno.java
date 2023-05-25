@@ -9,14 +9,16 @@ public class Alumno {
     private Integer dni;
     private Integer votos;
 
-    public Alumno(String nombreCompleto, Integer dni, Integer votos) {
+    
+
+    public Alumno(String nombreCompleto, Integer dni) {
         this.nombreCompleto = nombreCompleto;
         this.dni = dni;
-        this.votos = votos;
+        this.votos = 0;
     }
 
-    public Alumno(String nombre, String apellido, Integer dni, Integer votos) {
-        this.nombreCompleto = nombre.concat(" "+apellido);
+    public Alumno(String nombreCompleto, Integer dni, Integer votos) {
+        this.nombreCompleto = nombreCompleto;
         this.dni = dni;
         this.votos = votos;
     }
