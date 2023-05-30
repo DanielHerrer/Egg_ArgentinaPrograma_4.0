@@ -5,8 +5,7 @@
 
 import entities.Lavadora;
 import entities.Televisor;
-import services.LavadoraService;
-import services.TelevisorService;
+import services.*;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -20,6 +19,9 @@ public class App {
 
         Lavadora lavadora2 = ls.crearLavadora();
         Televisor televisor2 = ts.crearTelevisor();
+        
+        ls.precioFinal(lavadora2);
+        ts.precioFinal(televisor2);
 
         System.out.println("Precio final de lavadora2 = $"+lavadora2.getPrecio()+" usd");
         System.out.println("Precio final de televisor2 = $"+televisor2.getPrecio()+" usd");
