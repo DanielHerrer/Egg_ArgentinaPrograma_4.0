@@ -7,7 +7,7 @@ public class ExtraHoteleroService extends AlojamientoService {
 
 
     public ExtraHotelero crearExtraHotelero(){
-        Alojamiento a = super.crearAlojamiento();
+        Alojamiento a = crearAlojamiento();
         System.out.println("--- CREANDO EXTRA HOTELERO ---");
         boolean privado;
         do{

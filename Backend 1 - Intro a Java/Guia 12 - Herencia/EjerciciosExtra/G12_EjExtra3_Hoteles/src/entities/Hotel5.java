@@ -44,8 +44,8 @@ public final class Hotel5 extends Hotel4 {
     }
 
     @Override
-    public float precioHabitacion() {
-        float precio = super.precioHabitacion();
+    public double precioHabitacion() {
+        double precio = super.precioHabitacion();
         precio += (15 * cantLimosinas);
         
         return precio;

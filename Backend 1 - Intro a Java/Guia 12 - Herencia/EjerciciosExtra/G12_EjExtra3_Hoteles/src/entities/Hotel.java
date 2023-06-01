@@ -9,7 +9,7 @@ public class Hotel extends Alojamiento {
     protected int cantHabitaciones; // HABITACIONES POR PISO
     protected int cantCamas;    // CAMAS POR HABITACION
     protected int cantPisos;    // CANTIDAD DE PISOS
-    protected float precioHabitacion;
+    protected double precioHabitacion;
 
     public Hotel(){}
 
@@ -26,8 +26,8 @@ public class Hotel extends Alojamiento {
         return (cantHabitaciones * cantCamas) * cantPisos;
     }
 
-    public float precioHabitacion(){
-        float precio = 50f + (1 * capacidadDelHotel());
+    public double precioHabitacion(){
+        double precio = 50f + (1 * capacidadDelHotel());
         return precio;
     }
 
@@ -55,11 +55,11 @@ public class Hotel extends Alojamiento {
         this.cantPisos = cantPisos;
     }
 
-    public float getPrecioHabitacion() {
+    public double getPrecioHabitacion() {
         return precioHabitacion;
     }
 
-    public void setPrecioHabitacion(float precioHabitacion) {
+    public void setPrecioHabitacion(double precioHabitacion) {
         this.precioHabitacion = precioHabitacion;
     }
 

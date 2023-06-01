@@ -41,8 +41,8 @@ public class Hotel4 extends Hotel {
     }
 
     @Override
-    public float precioHabitacion() {
-        float precio = super.precioHabitacion();
+    public double precioHabitacion() {
+        double precio = super.precioHabitacion();
         // VALOR DEL RESTAURANTE
         if(capacidadRestaurante<30){
             precio += 10f;

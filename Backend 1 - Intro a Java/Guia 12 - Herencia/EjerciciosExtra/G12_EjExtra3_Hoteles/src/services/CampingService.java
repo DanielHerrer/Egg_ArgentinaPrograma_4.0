@@ -6,7 +6,8 @@ import entities.Camping;
 public class CampingService extends ExtraHoteleroService {
     
     public Camping crearCamping(){
-        ExtraHotelero eh = super.crearExtraHotelero();
+        ExtraHotelero eh = crearExtraHotelero();
+        System.out.println("--- CREANDO CAMPING ---");
         System.out.print("Ingrese la cantidad maxima de carpas => ");
         int cantCarpas = read.nextInt();
         read.nextLine();
