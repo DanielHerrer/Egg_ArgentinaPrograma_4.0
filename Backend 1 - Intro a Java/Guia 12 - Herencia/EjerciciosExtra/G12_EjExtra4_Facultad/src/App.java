@@ -106,7 +106,7 @@ public class App {
                                         personasFacultad.get(i).setEstadoCivil(read);   // CAMBIAR ESTADO CIVIL
                                         break;
                                     }
-                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                    if((i+1) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
                                         System.out.println(red+"ID invalido.."+reset);
                                     }
                                 }
@@ -129,7 +129,7 @@ public class App {
                                             break;
                                         }
                                     }
-                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                    if((i+1) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
                                         System.out.println(red+"ID invalido.."+reset);
                                     }
                                 }
@@ -149,7 +149,7 @@ public class App {
                                             break;
                                         }
                                     }
-                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                    if((i+1) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
                                         System.out.println(red+"ID invalido.."+reset);
                                     }
                                 }
@@ -169,7 +169,7 @@ public class App {
                                             break;
                                         }
                                     }
-                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                    if((i+1) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
                                         System.out.println(red+"ID invalido.."+reset);
                                     }
                                 }
@@ -189,7 +189,7 @@ public class App {
                                             break;
                                         }
                                     }
-                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                    if((i+1) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
                                         System.out.println(red+"ID invalido.."+reset);
                                     }
                                 }
@@ -206,13 +206,13 @@ public class App {
                                             for(Persona p: personasFacultad){
                                                 if(p instanceof Estudiante){
                                                     Estudiante e = (Estudiante) p;
-                                                    System.out.println("ID:"+e.getNumeroID()+" ("+e.getClass().getSimpleName()+") "+e.getNombre());
+                                                    System.out.println("ID:"+e.getNumeroID()+" ("+e.getClass().getSimpleName()+") "+e.getNombre()+" "+e.getApellido()+" ["+e.getCurso()+"]");
                                                 }else if(p instanceof Profesor){
                                                     Profesor pf = (Profesor) p;
-                                                    System.out.println("ID:"+pf.getNumeroID()+" ("+pf.getClass().getSimpleName()+") "+pf.getNombre());
+                                                    System.out.println("ID:"+pf.getNumeroID()+" ("+pf.getClass().getSimpleName()+") "+pf.getNombre()+" "+pf.getApellido()+" ["+pf.getDepartamento()+"]");
                                                 }else if(p instanceof PersonalServicio){
                                                     PersonalServicio ps = (PersonalServicio) p;
-                                                    System.out.println("ID:"+ps.getNumeroID()+" ("+ps.getClass().getSimpleName()+") "+ps.getNombre());
+                                                    System.out.println("ID:"+ps.getNumeroID()+" ("+ps.getClass().getSimpleName()+") "+ps.getNombre()+" "+ps.getApellido()+" ["+ps.getSeccion()+"]");
                                                 }
                                             }   
                                             break;
@@ -220,7 +220,7 @@ public class App {
                                             for(Persona p: personasFacultad){
                                                 if(p instanceof Estudiante){
                                                     Estudiante e = (Estudiante) p;
-                                                    System.out.println("ID:"+e.getNumeroID()+" ("+e.getClass().getSimpleName()+") "+e.getNombre());
+                                                    System.out.println("ID:"+e.getNumeroID()+" ("+e.getClass().getSimpleName()+") "+e.getNombre()+" "+e.getApellido()+" ["+e.getCurso()+"]");
                                                 }
                                             }
                                             break;
@@ -228,7 +228,7 @@ public class App {
                                             for(Persona p: personasFacultad){
                                                 if(p instanceof Profesor){
                                                     Profesor pf = (Profesor) p;
-                                                    System.out.println("ID:"+pf.getNumeroID()+" ("+pf.getClass().getSimpleName()+") "+pf.getNombre());
+                                                    System.out.println("ID:"+pf.getNumeroID()+" ("+pf.getClass().getSimpleName()+") "+pf.getNombre()+" "+pf.getApellido()+" ["+pf.getDepartamento()+"]");
                                                 }
                                             }
                                             break;
@@ -236,7 +236,7 @@ public class App {
                                             for(Persona p: personasFacultad){
                                                 if(p instanceof PersonalServicio){
                                                     PersonalServicio ps = (PersonalServicio) p;
-                                                    System.out.println("ID:"+ps.getNumeroID()+" ("+ps.getClass().getSimpleName()+") "+ps.getNombre());
+                                                    System.out.println("ID:"+ps.getNumeroID()+" ("+ps.getClass().getSimpleName()+") "+ps.getNombre()+" "+ps.getApellido()+" ["+ps.getSeccion()+"]");
                                                 }
                                             }
                                             break;
