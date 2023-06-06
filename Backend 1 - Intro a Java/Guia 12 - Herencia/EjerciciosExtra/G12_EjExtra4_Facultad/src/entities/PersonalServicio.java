@@ -27,25 +27,26 @@ public class PersonalServicio extends Empleado {
 
     public void setSeccion(Scanner read){
         System.out.println("-CAMBIAR SECCION-\n  1. Biblioteca\n  2. Decanato\n  3. Secretaría");
-        String seccion = "";
+        String seccionX = "";
         do{
-            System.out.println(cyan+"Ingrese opcion => "+reset);
+            System.out.print(cyan+"Ingrese opcion => "+reset);
             int op = read.nextInt();
             read.nextLine();
             switch(op){
                 case 1:
-                    seccion = "Biblioteca";
+                    seccionX = "Biblioteca";
                     break;
                 case 2:
-                    seccion = "Decanato";
+                    seccionX = "Decanato";
                     break;
                 case 3:
-                    seccion = "Secretaría";
+                    seccionX = "Secretaría";
                     break;
                 default:
                     System.out.println(red+"Opcion no valida."+reset);
             }
-        }while(seccion == "");
+        }while(seccionX == "");
+        this.seccion = seccionX;
     }
 
 }

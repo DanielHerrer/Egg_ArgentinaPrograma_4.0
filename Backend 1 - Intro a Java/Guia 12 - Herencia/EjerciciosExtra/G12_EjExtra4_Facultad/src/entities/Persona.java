@@ -60,25 +60,26 @@ public class Persona {
 
     public void setEstadoCivil(Scanner read){
         System.out.println("-CAMBIAR ESTADO CIVIL-\n  1. Solterx\n  2. Casadx\n  3. Poliamor");
-        String estadoCivil = "";
+        String estadoCivilX = "";
         do{
             System.out.print(cyan+"Ingrese opcion => "+reset);
             int opEstadoCivil = read.nextInt();
             read.nextLine();
             switch(opEstadoCivil){
                 case 1: 
-                    this.estadoCivil = "Solterx";
+                    estadoCivilX = "Solterx";
                     break;
                 case 2:
-                    this.estadoCivil = "Casadx";
+                    estadoCivilX = "Casadx";
                     break;
                 case 3:
-                    this.estadoCivil = "Poliamor";
+                    estadoCivilX = "Poliamor";
                     break;
                 default:
                     System.out.println(red+"Opcion invalida"+reset);
             }
-        }while(estadoCivil == "");
+        }while(estadoCivilX == "");
+        this.estadoCivil = estadoCivilX;
     }
 
     @Override

@@ -28,9 +28,9 @@ public class App {
 
         String red = "\u001B[31m"; // ANSI_RED
         String green = "\u001B[32m"; // ANSI_GREEN
-        String yellow = "\u001B[33m";
-        String blue = "\u001B[34m";
-        String purple = "\u001B[35m";
+        // String yellow = "\u001B[33m";
+        // String blue = "\u001B[34m";
+        // String purple = "\u001B[35m";
         String cyan = "\u001B[36m";
 
         String reset = "\u001B[0m";
@@ -39,6 +39,7 @@ public class App {
         int id = 0;
 
         System.out.println("Bienvenido al Sistema de Gestión de la Facultad!");
+        boolean salir = false;
         do{
             int op;
             System.out.println("MENU:\n1. Registrar Personas\n2. Gestionar Personas\n3. Salir");
@@ -81,7 +82,7 @@ public class App {
                             default:
                                 System.out.println(red+"Opcion invalida"+reset);
                         }
-                    }while(op_1!=3);
+                    }while(op_1!=4);
                     break;
                 case 2:
                     int op_2;
@@ -95,7 +96,7 @@ public class App {
 
                         int id_find;
                         switch(op_2){
-                            case 1:
+                            case 1: // Cambiar estado civil de una Persona
                                 System.out.println("-MENU CAMBIAR ESTADO CIVIL- (Persona)");
                                 System.out.print(green+"Ingrese ID de la Persona => "+reset);
                                 id_find = read.nextInt();
@@ -110,7 +111,7 @@ public class App {
                                     }
                                 }
                                 break;
-                            case 2:
+                            case 2: // Reasignar despacho de un Empleado
                                 System.out.println("-MENU REASIGNAR DESPACHO- (Empleado)");
                                 System.out.print(green+"Ingrese ID de la Persona => "+reset);
                                 id_find = read.nextInt();
@@ -133,7 +134,7 @@ public class App {
                                     }
                                 }
                                 break;
-                            case 3:
+                            case 3: // Matricular a un Estudiante en un nuevo curso
                                 System.out.println("-MENU MATRICULAR NUEVO CURSO- (Estudiante)");
                                 System.out.print(green+"Ingrese ID de la Persona => "+reset);
                                 id_find = read.nextInt();
@@ -153,39 +154,99 @@ public class App {
                                     }
                                 }
                                 break;
-                            case 4:
-                                ////////////////////////////////////////////////////
+                            case 4: // Cambiar departamento de un Profesor
+                                System.out.println("-MENU CAMBIAR DEPARTAMENTO- (Profesor)");
+                                System.out.print(green+"Ingrese ID de la Persona => "+reset);
+                                id_find = read.nextInt();
+                                read.nextLine();
+                                for(int i=0; i<personasFacultad.size(); i++){
+                                    if(personasFacultad.get(i).getNumeroID() == id_find){
+                                        if(personasFacultad.get(i) instanceof Profesor){
+                                            ((Profesor) personasFacultad.get(i)).setDepartamento(read);   // CAMBIAR DEPARTAMENTO
+                                            break;
+                                        }else{
+                                            System.out.println(red+"Esta Persona NO es Profesor .."+reset);
+                                            break;
+                                        }
+                                    }
+                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                        System.out.println(red+"ID invalido.."+reset);
+                                    }
+                                }
                                 break;
-                            case 5:
-                                ////////////////////////////////////////////////////
+                            case 5: // Trasladar de sección a un Empleado en Personal de Servicio
+                                System.out.println("-MENU TRASLADAR SECCION- (Personal de Servicio)");
+                                System.out.print(green+"Ingrese ID de la Persona => "+reset);
+                                id_find = read.nextInt();
+                                read.nextLine();
+                                for(int i=0; i<personasFacultad.size(); i++){
+                                    if(personasFacultad.get(i).getNumeroID() == id_find){
+                                        if(personasFacultad.get(i) instanceof PersonalServicio){
+                                            ((PersonalServicio) personasFacultad.get(i)).setSeccion(read);   // CAMBIAR SECCION
+                                            break;
+                                        }else{
+                                            System.out.println(red+"Esta Persona NO es Personal de Servicio .."+reset);
+                                            break;
+                                        }
+                                    }
+                                    if((i++) == personasFacultad.size()){   // Si la ULTIMA iteracion es equivalente al tamaño del arraylist
+                                        System.out.println(red+"ID invalido.."+reset);
+                                    }
+                                }
                                 break;
-                            case 6:
+                            case 6: // Imprimir Personas
                                 int op_2_6;
                                 do{
-                                    System.out.println("MENU: -Imprimir Personas-\n1. Imprimir por ID\n2. Imprimir Estudiantes\n3. Imprimir Profesores\n4. Imprimir Personal de Servicio\n5. Salir");
-                                    System.out.println(green+"Ingrese opcion => "+reset);
+                                    System.out.println("MENU: -Imprimir Personas-\n1. Imprimir por ID\n2. Imprimir Estudiantes\n3. Imprimir Profesores\n4. Imprimir Personal de Servicio\n5. Volver");
+                                    System.out.print(green+"Ingrese opcion => "+reset);
                                     op_2_6 = read.nextInt();
                                     read.nextLine();
                                     switch(op_2_6){
-                                        case 1:
-                                            ////////////////////////////////////////////////////
+                                        case 1: // IMPRIMIR POR ID
+                                            for(Persona p: personasFacultad){
+                                                if(p instanceof Estudiante){
+                                                    Estudiante e = (Estudiante) p;
+                                                    System.out.println("ID:"+e.getNumeroID()+" ("+e.getClass().getSimpleName()+") "+e.getNombre());
+                                                }else if(p instanceof Profesor){
+                                                    Profesor pf = (Profesor) p;
+                                                    System.out.println("ID:"+pf.getNumeroID()+" ("+pf.getClass().getSimpleName()+") "+pf.getNombre());
+                                                }else if(p instanceof PersonalServicio){
+                                                    PersonalServicio ps = (PersonalServicio) p;
+                                                    System.out.println("ID:"+ps.getNumeroID()+" ("+ps.getClass().getSimpleName()+") "+ps.getNombre());
+                                                }
+                                            }   
                                             break;
-                                        case 2:
-                                            ////////////////////////////////////////////////////
+                                        case 2: // IMPRIMIR ESTUDIANTES
+                                            for(Persona p: personasFacultad){
+                                                if(p instanceof Estudiante){
+                                                    Estudiante e = (Estudiante) p;
+                                                    System.out.println("ID:"+e.getNumeroID()+" ("+e.getClass().getSimpleName()+") "+e.getNombre());
+                                                }
+                                            }
                                             break;
-                                        case 3:
-                                            ////////////////////////////////////////////////////
+                                        case 3: // IMPRIMIR PROFESORES
+                                            for(Persona p: personasFacultad){
+                                                if(p instanceof Profesor){
+                                                    Profesor pf = (Profesor) p;
+                                                    System.out.println("ID:"+pf.getNumeroID()+" ("+pf.getClass().getSimpleName()+") "+pf.getNombre());
+                                                }
+                                            }
                                             break;
-                                        case 4:
-                                            ////////////////////////////////////////////////////
+                                        case 4: // IMPRIMIR PERSONAL DE SERVICIO
+                                            for(Persona p: personasFacultad){
+                                                if(p instanceof PersonalServicio){
+                                                    PersonalServicio ps = (PersonalServicio) p;
+                                                    System.out.println("ID:"+ps.getNumeroID()+" ("+ps.getClass().getSimpleName()+") "+ps.getNombre());
+                                                }
+                                            }
                                             break;
                                         case 5:
-                                            ////////////////////////////////////////////////////
+                                            System.out.println("Volviendo..");
                                             break;
                                         default:
                                             System.out.println(red+"Opcion invalida"+reset);
                                     }
-                                }while(op_2_6!=3);
+                                }while(op_2_6!=5);
                                 break;
                             case 7:
                                 System.out.println("Volviendo..");
@@ -196,12 +257,12 @@ public class App {
                     }while(op_2!=7);
                     break;
                 case 3:
+                    salir = true;
                     System.out.println(red+"Finalizando sistema .."+reset);
                     break;
                 default:
                     System.out.println(red+"Opcion invalida"+reset);
             }
-        }while(true);
-
+        }while(salir!=true);
     }
 }

@@ -9,7 +9,7 @@ public class PersonalServicioService extends EmpleadoService {
         System.out.println("-SECCION-\n  1. Biblioteca\n  2. Decanato\n  3. Secretaría");
         String seccion = "";
         do{
-            System.out.println(cyan+"Ingrese opcion => "+reset);
+            System.out.print(cyan+"Ingrese opcion => "+reset);
             int op = read.nextInt();
             read.nextLine();
             switch(op){

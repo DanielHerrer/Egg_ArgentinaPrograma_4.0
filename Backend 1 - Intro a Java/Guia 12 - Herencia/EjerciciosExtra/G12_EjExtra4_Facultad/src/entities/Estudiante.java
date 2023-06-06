@@ -26,25 +26,26 @@ public class Estudiante extends Persona {
 
     public void setCurso(Scanner read){
         System.out.println("-CAMBIAR CURSO-\n  1. Programación FrontEnd\n  2. Programación BackEnd\n  3. Analisis de datos");
-        String curso = "";
+        String cursoX = "";
         do{
             System.out.print(cyan+"Ingrese opcion => "+reset);
             int op = read.nextInt();
             read.nextLine();
             switch(op){
                 case 1:
-                    this.curso = blue+"Programación FrontEnd"+reset;
+                    cursoX = blue+"Programación FrontEnd"+reset;
                     break;
                 case 2:
-                    this.curso = purple+"Programación BackEnd"+reset;
+                    cursoX = purple+"Programación BackEnd"+reset;
                     break;
                 case 3:
-                    this.curso = yellow+"Analisis de Datos"+reset;
+                    cursoX = yellow+"Analisis de Datos"+reset;
                     break;
                 default:
                     System.out.println(red+"Opcion invalida"+reset);
             }
-        }while(curso == "");
+        }while(cursoX == "");
+        this.curso = cursoX;
     }
 
 }

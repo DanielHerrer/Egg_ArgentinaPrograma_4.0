@@ -16,7 +16,7 @@ public class EmpleadoService extends PersonaService {
             read.nextLine();
         }while(añoIncorporacion < 2000 || añoIncorporacion > LocalDate.now().getYear());  // LocalDate.now().getYear() = AÑO ACTUAL
         
-        System.out.println(cyan+"Ingrese numero de despacho => "+reset);
+        System.out.print(cyan+"Ingrese numero de despacho => "+reset);
         int numeroDeDespacho = read.nextInt();
         read.nextLine();
 
