@@ -18,9 +18,10 @@ package entities;
 
 public class Armadura {
     
-    protected int health;
-    protected String primary_color, secondary_color;
-    
+    protected int salud, rockwell;
+    protected String color_pri, color_sec;
+
+    public Armadura(){}
 
 
 

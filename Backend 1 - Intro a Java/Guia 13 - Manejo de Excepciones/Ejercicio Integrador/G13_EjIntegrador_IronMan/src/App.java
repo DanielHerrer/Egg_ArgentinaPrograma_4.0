@@ -37,20 +37,28 @@
 
 // En esta primera etapa con una armadura podremos: 
 //   (caminar, correr, propulsar, volar, escribir y leer)
+
 //      • Al caminar la armadura hará un uso básico de las botas y se consumirá la energía
 //      establecida como consumo en la bota por el tiempo en el que se camine.
+
 //      • Al correr la armadura hará un uso normal de las botas y se consumirá el doble de la
 //      energía establecida como consumo en la bota por el tiempo en el que se corra.
+
 //      • Al propulsarse la armadura hará un uso intensivo de las botas utilizando el triple de la
 //      energía por el tiempo que dure la propulsión.
+
 //      • Al volar la armadura hará un uso intensivo de las botas y de los guantes un uso normal
 //      consumiendo el triple de la energía establecida para las botas y el doble para los guantes.
+
 //      • Al utilizar los guantes como armas el consumo se triplica durante el tiempo del disparo.
+
 //      • Al utilizar las botas para caminar o correr el consumo es normal durante el tiempo que se
 //      camina o se corra.
+
 //      • Cada vez que se escribe en la consola o se habla a través del sintetizador se consume lo
 //      establecido en estos dispositivos. Solo se usa en nivel básico.
-//      • Cada vez que se efectúa una acción se llama a los métodos usar del dispositivo se le pasa
+
+//      • Cada vez que se efectúa una acción se llama a los métodos usar(int intensidad, int tiempo) del dispositivo se le pasa
 //      el nivel de intensidad y el tiempo. El dispositivo debe retornar la energía consumida y la
 //      armadura deberá informar al generador se ha consumido esa cantidad de energía.
 
@@ -66,7 +74,7 @@
 // consola. Poner como carga máxima del reactor el mayor float posible. Ejecutar varias acciones y
 // mostrar el estado de la misma.
 
-// Mostrar Información del Reactor
+// Mostrar Información del Reactor - ??????????????????????????????
 // Hacer un método para que JARVIS informe el estado del reactor en otras dos unidades de
 // medida. Hay veces en las que Tony tiene pretensiones extrañas. Buscar en Wikipedia la tabla de
 // transformaciones.
@@ -89,9 +97,10 @@
 // encontrar un dispositivo dañado se debe intentar arreglarlo de manera insistente. Para esos
 // intentos hay un 30% de posibilidades de que el dispositivo quede destruido, pero se deberá
 // intentar arreglarlo hasta que lo repare, o bien hasta que quede destruido.
-
-// Hacer un método llamado revisar dispositivos que efectúe lo anteriormente descrito, el
+// Hacer un método llamado revisarDispositivos() que efectúe lo anteriormente descrito, el
 // mecanismo insistente debe efectuarlo con un bucle do while.
+
+// --------------------------------------------------------------------------------------------------
 
 // Radar Versión 1.0
 // JARVIS posee también incorporado un sistema que usa ondas electromagnéticas para medir
@@ -136,3 +145,58 @@ public class App {
         System.out.println("Hello, World!");
     }
 }
+
+// Lionel Santillan
+
+// package sonido;
+ 
+// import java.util.Locale; 
+// import javax.speech.Central; 
+// import javax.speech.synthesis.Synthesizer; 
+// import javax.speech.synthesis.SynthesizerModeDesc; 
+ 
+// public class SonidoSp {
+ 
+//     public static void main(String[] args) {
+ 
+//         try { 
+//             // Set property as Kevin Dictionary 
+//             System.setProperty( 
+//                 "freetts.voices", 
+//                 "com.sun.speech.freetts.en.us"
+//                     + ".cmu_us_kal.KevinVoiceDirectory"); 
+ 
+//             // Register Engine 
+//             Central.registerEngineCentral( 
+//                 "com.sun.speech.freetts"
+//                 + ".jsapi.FreeTTSEngineCentral"); 
+ 
+//             // Create a Synthesizer 
+//             Synthesizer synthesizer 
+//                 = Central.createSynthesizer( 
+//                     new SynthesizerModeDesc(Locale.US)); 
+ 
+//             // Allocate synthesizer 
+//             synthesizer.allocate(); 
+ 
+//             // Resume Synthesizer 
+//             synthesizer.resume(); 
+ 
+//             // Speaks the given text 
+//             // until the queue is empty. 
+//             synthesizer.speakPlainText( 
+//                 "hola esto es carnaval tu p**a madre", null); 
+//             synthesizer.waitEngineState( 
+//                 Synthesizer.QUEUE_EMPTY); 
+ 
+//             // Deallocate the Synthesizer. 
+//             synthesizer.deallocate(); 
+//         } 
+ 
+//         catch (Exception e) { 
+//             e.printStackTrace(); 
+//         } 
+ 
+//     }
+ 
+// }
