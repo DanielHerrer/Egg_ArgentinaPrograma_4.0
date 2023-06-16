@@ -32,8 +32,8 @@
 // En el casco también se encuentra un sintetizador por donde JARVIS
 // susurra cosas al oído de Tony. 
 
-// Cada dispositivo de la armadura de Iron Man (botas, guantes, casco(consola y sintetizador))
-//  tienen un consumo de energía asociado.
+// Cada dispositivo de la armadura de Iron Man (botas, guantes,
+// consola y sintetizador) tienen un consumo de energía asociado.
 
 // En esta primera etapa con una armadura podremos: 
 //   (caminar, correr, propulsar, volar, escribir y leer)
@@ -74,7 +74,7 @@
 // consola. Poner como carga máxima del reactor el mayor float posible. Ejecutar varias acciones y
 // mostrar el estado de la misma.
 
-// Mostrar Información del Reactor - ??????????????????????????????
+// Mostrar Información del Reactor
 // Hacer un método para que JARVIS informe el estado del reactor en otras dos unidades de
 // medida. Hay veces en las que Tony tiene pretensiones extrañas. Buscar en Wikipedia la tabla de
 // transformaciones.
@@ -140,63 +140,14 @@
 // Deberíamos alejarnos por lo menos 10 km enemigo. Tener en cuenta que la velocidad de vuelo
 // promedio es de 300 km / hora.
 
+import services.JarvisService;
+
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+
+        JarvisService js = new JarvisService();
+
+        js.inicioJarvis();
+
     }
 }
-
-// Lionel Santillan
-
-// package sonido;
- 
-// import java.util.Locale; 
-// import javax.speech.Central; 
-// import javax.speech.synthesis.Synthesizer; 
-// import javax.speech.synthesis.SynthesizerModeDesc; 
- 
-// public class SonidoSp {
- 
-//     public static void main(String[] args) {
- 
-//         try { 
-//             // Set property as Kevin Dictionary 
-//             System.setProperty( 
-//                 "freetts.voices", 
-//                 "com.sun.speech.freetts.en.us"
-//                     + ".cmu_us_kal.KevinVoiceDirectory"); 
- 
-//             // Register Engine 
-//             Central.registerEngineCentral( 
-//                 "com.sun.speech.freetts"
-//                 + ".jsapi.FreeTTSEngineCentral"); 
- 
-//             // Create a Synthesizer 
-//             Synthesizer synthesizer 
-//                 = Central.createSynthesizer( 
-//                     new SynthesizerModeDesc(Locale.US)); 
- 
-//             // Allocate synthesizer 
-//             synthesizer.allocate(); 
- 
-//             // Resume Synthesizer 
-//             synthesizer.resume(); 
- 
-//             // Speaks the given text 
-//             // until the queue is empty. 
-//             synthesizer.speakPlainText( 
-//                 "hola esto es carnaval tu p**a madre", null); 
-//             synthesizer.waitEngineState( 
-//                 Synthesizer.QUEUE_EMPTY); 
- 
-//             // Deallocate the Synthesizer. 
-//             synthesizer.deallocate(); 
-//         } 
- 
-//         catch (Exception e) { 
-//             e.printStackTrace(); 
-//         } 
- 
-//     }
- 
-// }
