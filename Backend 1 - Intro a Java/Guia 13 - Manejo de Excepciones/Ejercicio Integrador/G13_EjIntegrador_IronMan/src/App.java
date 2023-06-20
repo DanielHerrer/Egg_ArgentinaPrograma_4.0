@@ -148,6 +148,30 @@ public class App {
         JarvisService js = new JarvisService();
 
         js.inicioJarvis();
-
+        
     }
 }
+
+// ------ Colores de Fuente:
+
+// CERRAR LLAVE = \u001B[0m
+
+// Negro: \u001B[30m
+// Rojo: \u001B[31m
+// Verde: \u001B[32m
+// Amarillo: \u001B[33m
+// Azul: \u001B[34m
+// Magenta: \u001B[35m
+// Cian: \u001B[36m
+// Blanco: \u001B[37m
+
+// ------ Colores de Fondo:
+// Fondo Negro: \u001B[40m
+// Fondo Rojo: \u001B[41m
+// Fondo Verde: \u001B[42m
+// Fondo Amarillo: \u001B[43m
+// Fondo Azul: \u001B[44m
+// Fondo Magenta: \u001B[45m
+// Fondo Cian: \u001B[46m
+// Fondo Blanco: \u001B[47m
+

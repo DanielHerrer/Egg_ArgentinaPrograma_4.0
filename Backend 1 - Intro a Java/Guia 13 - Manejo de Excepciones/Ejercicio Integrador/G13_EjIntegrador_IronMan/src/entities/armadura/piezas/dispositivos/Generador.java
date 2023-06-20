@@ -4,11 +4,11 @@ package entities.armadura.piezas.dispositivos;
 
 public class Generador {
     
-    private final float energiaMax = Float.MAX_VALUE;
+    private final float energiaMax = 50000;
     private float energia;  // energia del reactor
     
     public Generador(){
-        energia = Float.MAX_VALUE;
+        energia = 50000;
     }
 
     public Generador(float e){

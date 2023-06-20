@@ -111,6 +111,22 @@ public class Armadura {
         this.resistencia = resistencia;
     }
 
+    public String getAsciiColor_pri(){
+        if(this.color_pri.equalsIgnoreCase("rojo")){
+            return "\u001B[31m";
+        }else if(this.color_pri.equalsIgnoreCase("verde")){
+            return "\u001B[32m";
+        }else if(this.color_pri.equalsIgnoreCase("amarillo")){
+            return "\u001B[33m";
+        }else if(this.color_pri.equalsIgnoreCase("azul")){
+            return "\u001B[34m";
+        }else if(this.color_pri.equalsIgnoreCase("purpura")){
+            return "\u001B[35m";
+        }else{
+            return "ERROR";
+        }
+    }
+
     public String getColor_pri() {
         return color_pri;
     }

@@ -14,7 +14,7 @@ public class Bota {
         propulsor = p;
     }
 
-    public float usar(int intensidad, int tiempo){
+    public float usar(int intensidad, float tiempo){
         return propulsor.usar(intensidad,tiempo);
     }
 

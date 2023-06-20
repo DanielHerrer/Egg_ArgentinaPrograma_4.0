@@ -47,32 +47,37 @@ package entities.radar;
 public class Radar {
 
     // EVASION (alejarse 10km del enemigo)
-    // CAMINAR = (BOTAS x1 x1) (x2) = 60 km x hr | 1km x min
+    // CAMINAR = (BOTAS x1 x1) (x2) = 60km x hr | 1km x min
+            // BOTA 30km x hr | 0,5km x min
     // CORRER = (BOTAS: x2 x2) (x4) = 120km x hr | 2km x min
+            // BOTA 60km x hr | 1km x min
     // PROPULSARSE = (BOTAS: x3 x3) (x6) = 180km x hr | 3km x min 
-    // VOLAR = 300km por hora , 5km por minuto // (GUANTES: x2 x2) (x4) 120km x hr | (BOTAS: x3 x3) (x6) = 180km x hr
+            // BOTA 90km x hr | 1.5km x min
+    // VOLAR = (ambos guantes y botas) 300km por hora | 5km por minuto 
+            // GUANTES 120km x hr [2km x min] | BOTAS 180km x hr [3km x min]
+            // GUANTE 60km x hr [1km x min] + BOTA 90km x hr [1.5km x min] = 2.5km x min
     private int x,y,z;
-    private int[][][] campoVision;
-    private int[][][] mapaCompleto;
+
+    private Objetivo[][][] mapaCompleto;
 
     public Radar(){
-        x = 50;
-        y = 50;
+        x = 25;
+        y = 25;
         z = 0;
-        campoVision = new int[11][11][11];
-        mapaCompleto = new int[100][100][100];
+        mapaCompleto = new Objetivo[50][50][50];
     }
 
-    public Radar(int[][][] campoVision, int[][][] mapaCompleto) {
-        this.campoVision = campoVision;
+    public Radar(Objetivo[][][] mapaCompleto) {
         this.mapaCompleto = mapaCompleto;
+        x = 24;
+        y = 24;
+        z = 0;
     }
 
-    public Radar(int x, int y, int z, int[][][] campoVision, int[][][] mapaCompleto) {
+    public Radar(int x, int y, int z, Objetivo[][][] mapaCompleto) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.campoVision = campoVision;
         this.mapaCompleto = mapaCompleto;
     }
 
@@ -81,18 +86,20 @@ public class Radar {
         int xView = this.x - 5;
         int yView = this.y - 5;
         int zView = this.z;
-        for(int yi = 0; yi<campoVision.length; yi++){
-            for(int xi = 0; xi<campoVision[yi].length; xi++){
+        for(int yi = 0; yi<11; yi++){
+            for(int xi = 0; xi<11; xi++){
                 try{
-                    if(mapaCompleto[xView][yView][zView] == 0){
-                        vista += "[ ]";
-                    }else if(mapaCompleto[xView][yView][zView] == 1){
-                        vista += "[#]";
-                    }else if(mapaCompleto[xView][yView][zView] == 2){
-                        vista += "[X]";
+                    if(yi==5 && xi==5){
+                        vista += "\u001B[36m[O]\u001B[0m"; // el centro del radar
+                    }else if(mapaCompleto[xView][yView][zView] == null){
+                        vista += "[ ]"; // si no hay nada
+                    }else if(mapaCompleto[xView][yView][zView].isHostil()){
+                        vista += "[\u001B[31mX\u001B[0m]"; // "X" si es enemigo
+                    }else if(!mapaCompleto[xView][yView][zView].isHostil()){
+                        vista += "[\u001B[32m#\u001B[0m]"; // "#" si es aliado
                     }
                 }catch(IndexOutOfBoundsException e){
-                    vista += "[-]";
+                    vista += "[\u001B[33m-\u001B[0m]"; // "-" si es fuera del mapa
                 }finally{
                     xView ++;
                 }
@@ -112,19 +119,128 @@ public class Radar {
         return posiciones;
     }
 
-    public int[][][] getCampoVision() {
-        return campoVision;
+    public void setPosiciones(int[] posiciones){
+        this.x = posiciones[0];
+        this.y = posiciones[1];
+        this.z = posiciones[2];
     }
 
-    public void setCampoVision(int[][][] campoVision) {
-        this.campoVision = campoVision;
+    public boolean posicionOcupada(int xP, int yP, int zP){
+        if(mapaCompleto[xP][yP][zP] == null){
+            return false;
+        }else if(mapaCompleto[xP][yP][zP] != null){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public int[][][] getMapaCompleto() {
+    public boolean posicionOcupada(int posiciones[]){
+        int xP = posiciones[0];
+        int yP = posiciones[1];
+        int zP = posiciones[2];
+        if(mapaCompleto[xP][yP][zP] == null){
+            return false;
+        }else if(mapaCompleto[xP][yP][zP] != null){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public void insertarObjetivo(Objetivo obj){
+        int Xi = obj.getX();
+        int Yi = obj.getY();
+        int Zi = obj.getZ();
+        this.mapaCompleto[Xi][Yi][Zi] = obj;
+    }
+
+    public void eliminarObjetivo(Objetivo obj){
+        int Xi = obj.getX();
+        int Yi = obj.getY();
+        int Zi = obj.getZ();
+        this.mapaCompleto[Xi][Yi][Zi] = null;
+    }
+
+    public void limpiarMapa(){
+        for (int i = 0; i < mapaCompleto.length; i++) {
+            for (int j = 0; j < mapaCompleto[i].length; j++) {
+                for (int k = 0; k < mapaCompleto[i][j].length; k++) {
+                    mapaCompleto[i][j][k] = null;
+                }
+            }
+        }
+    } 
+
+    public int getCantObjetivosHostiles(){
+        int cantHostiles = 0;
+        for(int i = 0; i<mapaCompleto.length; i++){
+            for(int j = 0; j<mapaCompleto[i].length; j++){
+                for(int k = 0; k<mapaCompleto[j].length; k++){
+                    if(mapaCompleto[i][j][k] instanceof Objetivo){
+                        if(mapaCompleto[i][j][k].isHostil()){
+                            cantHostiles++;
+                        }
+                    }
+                } 
+            }
+        }
+        return cantHostiles;
+    }
+
+    public String getListaObjetivosHostiles(){
+        String listaHostiles = "";
+        for(int i = 0; i<mapaCompleto.length; i++){
+            for(int j = 0; j<mapaCompleto[i].length; j++){
+                for(int k = 0; k<mapaCompleto[j].length; k++){
+                    if(mapaCompleto[i][j][k] instanceof Objetivo){
+                        if(mapaCompleto[i][j][k].isHostil()){
+                            listaHostiles += "OBJETIVO (HOSTIL): [RESISTENCIA="+mapaCompleto[i][j][k].getResistencia()+"] [X="+i+" / Y="+j+" / Z="+k+"]\n";
+                        }
+                    }
+                } 
+            }
+        }
+        return listaHostiles;
+    }
+
+    public String getListaObjetivosAliados(){
+        String listaAliados = "";
+        for(int i = 0; i<mapaCompleto.length; i++){
+            for(int j = 0; j<mapaCompleto[i].length; j++){
+                for(int k = 0; k<mapaCompleto[j].length; k++){
+                    if(mapaCompleto[i][j][k] instanceof Objetivo){
+                        if(!mapaCompleto[i][j][k].isHostil()){
+                            listaAliados += "OBJETIVO (ALIADO): [X="+i+" / Y="+j+" / Z="+k+"]\n";
+                        }
+                    }
+                } 
+            }
+        }
+        return listaAliados;
+    }
+
+    public int getCantObjetivosAliados(){
+        int cantAliados = 0;
+        for(int i = 0; i<mapaCompleto.length; i++){
+            for(int j = 0; j<mapaCompleto[i].length; j++){
+                for(int k = 0; k<mapaCompleto[j].length; k++){
+                    if(mapaCompleto[i][j][k] instanceof Objetivo){
+                        if(!mapaCompleto[i][j][k].isHostil()){
+                            cantAliados++;
+                        }
+                    }
+                } 
+            }
+        }
+        return cantAliados;
+    }
+
+    public Objetivo[][][] getMapaCompleto() {
         return mapaCompleto;
     }
 
-    public void setMapaCompleto(int[][][] mapaCompleto) {
+    public void setMapaCompleto(Objetivo[][][] mapaCompleto) {
         this.mapaCompleto = mapaCompleto;
     }
 

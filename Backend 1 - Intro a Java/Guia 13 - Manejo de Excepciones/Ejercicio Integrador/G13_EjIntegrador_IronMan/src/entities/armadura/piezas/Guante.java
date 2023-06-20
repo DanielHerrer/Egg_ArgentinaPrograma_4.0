@@ -14,7 +14,11 @@ public class Guante {
         repulsor = r;
     }
 
-    public float usar(int intensidad, int tiempo){
+    public float usar(int intensidad){
+        return repulsor.usar(intensidad);
+    }
+
+    public float usar(int intensidad, float tiempo){
         return repulsor.usar(intensidad,tiempo);
     }
 

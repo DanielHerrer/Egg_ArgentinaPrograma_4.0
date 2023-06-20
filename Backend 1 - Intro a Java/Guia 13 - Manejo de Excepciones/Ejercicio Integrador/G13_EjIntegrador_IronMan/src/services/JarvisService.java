@@ -7,6 +7,7 @@ import java.util.Scanner;
 import entities.Jarvis;
 import entities.armadura.Armadura;
 import entities.armadura.piezas.dispositivos.*;
+import entities.radar.Objetivo;
 import entities.radar.Radar;
 
 public class JarvisService {
@@ -18,18 +19,25 @@ public class JarvisService {
     public void inicioJarvis(){
         s.susurrar("Bienvenido al Sistema de Jarvis!");
         s.susurrar("Vamos a crear su armadura!");
+
         Armadura exoesqueleto = crearArmadura();
         Jarvis jarvis = new Jarvis(exoesqueleto);
         System.out.println(jarvis.getAsciiHelmet());
         jarvis.getArmadura().getCasco().usarSintetizador("La armadura se incorpora a su cuerpo pilotx. El exoesqueleto esta listo!");        
-        jarvis.getArmadura().getCasco().usarConsola("-- Iniciando simulador de combate --");
+        
+        iniciarSimulador(jarvis);
+    }
+
+    public void menuJarvis(Jarvis jarvis){
+        boolean salir = false;
         do{
             System.out.println("-----------------------------------------------------------");
-            jarvis.getArmadura().getCasco().usarConsola("- MENU -" +
+            jarvis.getArmadura().getCasco().usarConsola("- MENU JARVIS -" +
                                                         "\n1. Mostrar estado de la armadura" +
                                                         "\n2. Mostrar estado de la bateria" +
                                                         "\n3. Informacion del reactor" +
-                                                        "\n4. Revisar dispositivos y daños");
+                                                        "\n4. Revisar dispositivos y daños" +
+                                                        "\n5. Volver");
             System.out.print("Ingrese opcion => ");
             int menu_op = read.nextInt();
             read.nextLine();
@@ -46,12 +54,14 @@ public class JarvisService {
                 case 4:
                     revisandoDispositivos(jarvis);
                     break;
+                case 5:
+                    salir = true;
+                    break;
                 default:
                     System.out.println("Opcion incorrecta");
                     break;
             }
-        }while(jarvis.getArmadura().isFuncional());
-       jarvis.getArmadura().getCasco().usarConsola("Finalizando..");
+        }while(!salir);
     }
 
     public Armadura crearArmadura(){
@@ -188,10 +198,25 @@ public class JarvisService {
 
 // • Al caminar la armadura hará un uso básico de las botas y se consumirá la energía
 //   establecida como consumo en la bota por el tiempo en el que se camine (BOTAS x1 x1) (x2)
-    public void caminar(Jarvis j, int tiempo) {
+    public void caminar(Jarvis j) {
         j.getArmadura().getCasco().usarSintetizador("Iniciando caminar ..");
+        float energiaActual = j.getArmadura().getGenerador().getEnergia();
         float energiaGastada = 0;
         int modo = 0;
+
+        int[] posicionesCam = elegirCoordenadas();
+        while(j.getRadar().posicionOcupada(posicionesCam)){
+            j.getArmadura().getCasco().usarSintetizador("Las coordenadas indicadas estan ocupadas!");
+            posicionesCam = elegirCoordenadas();
+        }
+        int xViajeCam = Math.abs(posicionesCam[0] - j.getRadar().getPosiciones()[0]);                    
+        int yViajeCam = Math.abs(posicionesCam[1] - j.getRadar().getPosiciones()[1]);                    
+        int zViajeCam = Math.abs(posicionesCam[2] - j.getRadar().getPosiciones()[2]);                    
+        int distanciaKmCam = xViajeCam + yViajeCam + zViajeCam;
+
+        j.getArmadura().getCasco().usarConsola("Preparando sistemas para caminar "+distanciaKmCam+" km");
+        float tiempoMin = 0;
+
         // SI FALLAN LAS 2 BOTAS
         if(j.getArmadura().getBotaDer().isDañado() && j.getArmadura().getBotaIzq().isDañado()){
             j.getArmadura().getCasco().usarSintetizador("Imposible realizar accion.. ambas botas fallan.");
@@ -200,26 +225,31 @@ public class JarvisService {
             if(j.getArmadura().getBotaDer().isDañado()){
                 modo = 1;
                 j.getArmadura().getCasco().usarSintetizador("Bota derecha esta fallando, encendiendo bota izquierda ..");
-                energiaGastada += j.getArmadura().getBotaIzq().usar(2, tiempo);
+                tiempoMin = (float) (distanciaKmCam / 0.5); // 0.5km por minuto
+                energiaGastada += j.getArmadura().getBotaIzq().usar(2, tiempoMin);
             }else{
                 modo = 2;
                 j.getArmadura().getCasco().usarSintetizador("Bota izquierda esta fallando, encendiendo bota derecha ..");
-                energiaGastada += j.getArmadura().getBotaDer().usar(2, tiempo);
+                tiempoMin = (float) (distanciaKmCam / 0.5); // 0.5km por minuto
+                energiaGastada += j.getArmadura().getBotaDer().usar(2, tiempoMin);
             }
         // SI AMBAS BOTAS ESTAN FUNCIONANDO CORRECTAMENTE
         }else{  
             modo = 3;
             j.getArmadura().getCasco().usarSintetizador("Ambas botas parecen funcionar, encendiendo..");
-            energiaGastada += j.getArmadura().getBotaIzq().usar(1, tiempo) + j.getArmadura().getBotaDer().usar(1, tiempo);
+            tiempoMin = (float) (distanciaKmCam / 1); // 1km por minuto
+            energiaGastada += j.getArmadura().getBotaIzq().usar(1, tiempoMin) + j.getArmadura().getBotaDer().usar(1, tiempoMin);
         }
         if(modo != 0){
             // SI LA ENERGIA A GASTAR ES MAYOR QUE LA ENERGIA DISPONIBLE
-            if(energiaGastada>j.getArmadura().getGenerador().getEnergia()){
+            if(energiaGastada>energiaActual){
                 j.getArmadura().getCasco().usarSintetizador("Imposible completar accion! No queda energia suficiente..");
             // SI LA ENERGIA ES SUFICIENTE, SE CONSUME, Y LOS DISPOSITIVOS PUEDEN DAÑARSE
             }else{
                 j.getArmadura().getCasco().usarSintetizador("Caminando ..");
-                j.getArmadura().getGenerador().setEnergia(j.getArmadura().getGenerador().getEnergia() - energiaGastada);
+                j.getArmadura().getCasco().usarConsola("Tiempo estimado de viaje =  ["+ tiempoMin +" minutos]");
+                j.getArmadura().getGenerador().setEnergia(energiaActual - energiaGastada); // ACTUALIZA ENERGIA RESTANTE
+                j.getRadar().setPosiciones(posicionesCam);  //  ACTUALIZA COORDENADAS ACTUALES
                 boolean botaIzqRota = false, botaDerRota = false;
                 switch(modo){
                     case 1:
@@ -243,17 +273,32 @@ public class JarvisService {
                         j.getArmadura().getCasco().usarSintetizador("Bota derecha ha quedado dañada!");
                     }
                 }
-                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+(energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100);
+                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+Math.round((energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100));
             }
         }
     }
 
 // • Al correr la armadura hará un uso normal de las botas y se consumirá el doble de la
 //   energía establecida como consumo en la bota por el tiempo en el que se corra. (BOTAS: x2 x2) (x4)
-    public void correr(Jarvis j, int tiempo) {
+    public void correr(Jarvis j) {
         j.getArmadura().getCasco().usarSintetizador("Iniciando correr ..");
+        float energiaActual = j.getArmadura().getGenerador().getEnergia();
         float energiaGastada = 0;
         int modo = 0;
+
+        int[] posicionesCor = elegirCoordenadas();
+        while(j.getRadar().posicionOcupada(posicionesCor)){
+            j.getArmadura().getCasco().usarSintetizador("Las coordenadas indicadas estan ocupadas!");
+            posicionesCor = elegirCoordenadas();
+        }
+        int xViajeCor = Math.abs(posicionesCor[0] - j.getRadar().getPosiciones()[0]);                    
+        int yViajeCor = Math.abs(posicionesCor[1] - j.getRadar().getPosiciones()[1]);                    
+        int zViajeCor = Math.abs(posicionesCor[2] - j.getRadar().getPosiciones()[2]);                    
+        int distanciaKmCor = xViajeCor + yViajeCor + zViajeCor;
+
+        j.getArmadura().getCasco().usarConsola("Preparando sistemas para correr "+distanciaKmCor+" km");
+        float tiempoMin = 0;
+
         // SI FALLAN LAS 2 BOTAS
         if(j.getArmadura().getBotaDer().isDañado() && j.getArmadura().getBotaIzq().isDañado()){
             j.getArmadura().getCasco().usarSintetizador("Imposible realizar acción.. ambas botas fallan.");
@@ -262,25 +307,30 @@ public class JarvisService {
             if(j.getArmadura().getBotaDer().isDañado()){
                 modo = 1;
                 j.getArmadura().getCasco().usarSintetizador("Bota derecha está fallando, encendiendo bota izquierda ..");
-                energiaGastada += j.getArmadura().getBotaIzq().usar(4, tiempo);
+                tiempoMin = distanciaKmCor / 1; // 1km por minuto
+                energiaGastada += j.getArmadura().getBotaIzq().usar(4, tiempoMin);
             }else{
                 modo = 2;
                 j.getArmadura().getCasco().usarSintetizador("Bota izquierda esta fallando, encendiendo bota derecha ..");
-                energiaGastada += j.getArmadura().getBotaDer().usar(4, tiempo);
+                tiempoMin = distanciaKmCor / 1; // 1km por minuto
+                energiaGastada += j.getArmadura().getBotaDer().usar(4, tiempoMin);
             }
         // SI AMBAS BOTAS ESTAN FUNCIONANDO CORRECTAMENTE
         }else{  
             modo = 3;
             j.getArmadura().getCasco().usarSintetizador("Ambas botas parecen funcionar, encendiendo..");
-            energiaGastada += j.getArmadura().getBotaIzq().usar(2, tiempo) + j.getArmadura().getBotaDer().usar(2, tiempo);
+            tiempoMin = distanciaKmCor / 2; // 2km por minuto
+            energiaGastada += j.getArmadura().getBotaIzq().usar(2, tiempoMin) + j.getArmadura().getBotaDer().usar(2, tiempoMin);
         }
         if(modo != 0){
             // SI LA ENERGIA A GASTAR ES MAYOR QUE LA ENERGIA DISPONIBLE
-            if(energiaGastada>j.getArmadura().getGenerador().getEnergia()){
+            if(energiaGastada>energiaActual){
                 j.getArmadura().getCasco().usarSintetizador("Imposible completar accion! No queda energia suficiente..");
             }else{
                 j.getArmadura().getCasco().usarSintetizador("Corriendo ..");
-                j.getArmadura().getGenerador().setEnergia(j.getArmadura().getGenerador().getEnergia() - energiaGastada);
+                j.getArmadura().getCasco().usarConsola("Tiempo estimado de viaje =  ["+ tiempoMin +" minutos]");
+                j.getArmadura().getGenerador().setEnergia(energiaActual - energiaGastada);  // ACTUALIZA ENERGIA RESTANTE
+                j.getRadar().setPosiciones(posicionesCor); // ACTUALIZA COORDENADAS ACTUALES
                 boolean botaIzqRota = false, botaDerRota = false;
                 switch(modo){
                     case 1:
@@ -304,43 +354,63 @@ public class JarvisService {
                         j.getArmadura().getCasco().usarSintetizador("Bota derecha ha quedado dañada!");
                     }
                 }
-                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+(energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100);
+                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+Math.round((energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100));
             }
         }
     }
 
 // • Al propulsarse la armadura hará un uso intensivo de las botas utilizando el triple de la
 //   energía por el tiempo que dure la propulsión. (BOTAS: x3 x3) (x6)
-    public void propulsarse(Jarvis j, int tiempo) {
+    public void propulsarse(Jarvis j) {
         j.getArmadura().getCasco().usarSintetizador("Inciando propulsar ..");
+        float energiaActual = j.getArmadura().getGenerador().getEnergia();
         float energiaGastada = 0;
         int modo = 0;
+
+        int[] posicionesPro = elegirCoordenadas();
+        while(j.getRadar().posicionOcupada(posicionesPro)){
+            j.getArmadura().getCasco().usarSintetizador("Las coordenadas indicadas estan ocupadas!");
+            posicionesPro = elegirCoordenadas();
+        }
+        int xViajePro = Math.abs(posicionesPro[0] - j.getRadar().getPosiciones()[0]);                    
+        int yViajePro = Math.abs(posicionesPro[1] - j.getRadar().getPosiciones()[1]);                    
+        int zViajePro = Math.abs(posicionesPro[2] - j.getRadar().getPosiciones()[2]);                    
+        int distanciaKmPro = xViajePro + yViajePro + zViajePro;
+        
+        j.getArmadura().getCasco().usarConsola("Preparando sistemas para propulsarse "+distanciaKmPro+" km/s");
+        float tiempoMin = 0;
+        
         if(j.getArmadura().getBotaDer().isDañado() && j.getArmadura().getBotaIzq().isDañado()){
             j.getArmadura().getCasco().usarSintetizador("Imposible realizar acción.. ambas botas fallan.");
         }else if(j.getArmadura().getBotaDer().isDañado() || j.getArmadura().getBotaIzq().isDañado()){
             if(j.getArmadura().getBotaDer().isDañado()){
                 modo = 1;
                 j.getArmadura().getCasco().usarSintetizador("Bota derecha está fallando, encendiendo bota izquierda ..");
-                energiaGastada += j.getArmadura().getBotaIzq().usar(6, tiempo);
+                tiempoMin = (float) (distanciaKmPro / 1.5); // 1.5km por minuto
+                energiaGastada += j.getArmadura().getBotaIzq().usar(6, tiempoMin);
             }else{
                 modo = 2;
                 j.getArmadura().getCasco().usarSintetizador("Bota izquierda está fallando, encendiendo bota derecha ..");
-                energiaGastada += j.getArmadura().getBotaDer().usar(6, tiempo);
+                tiempoMin = (float) (distanciaKmPro / 1.5); // 1.5km por minuto
+                energiaGastada += j.getArmadura().getBotaDer().usar(6, tiempoMin);
             }
         // SI AMBAS BOTAS ESTAN FUNCIONANDO CORRECTAMENTE
         }else{  
             modo = 3;
             j.getArmadura().getCasco().usarSintetizador("Ambas botas parecen funcionar, encendiendo..");
-            energiaGastada += j.getArmadura().getBotaIzq().usar(3, tiempo) + j.getArmadura().getBotaDer().usar(3, tiempo);
+            tiempoMin = (float) (distanciaKmPro / 3); // 3km por minuto
+            energiaGastada += j.getArmadura().getBotaIzq().usar(3, tiempoMin) + j.getArmadura().getBotaDer().usar(3, tiempoMin);
         }
         if(modo != 0){
             // SI LA ENERGIA A GASTAR ES MAYOR QUE LA ENERGIA DISPONIBLE
-            if(energiaGastada>j.getArmadura().getGenerador().getEnergia()){
+            if(energiaGastada>energiaActual){
                 j.getArmadura().getCasco().usarSintetizador("Imposible completar accion! No queda energia suficiente..");
             // SI LA ENERGIA ES SUFICIENTE, SE CONSUME, Y LOS DISPOSITIVOS PUEDEN DAÑARSE
             }else{
                 j.getArmadura().getCasco().usarSintetizador("Propulsandose ..");
-                j.getArmadura().getGenerador().setEnergia(j.getArmadura().getGenerador().getEnergia() - energiaGastada);
+                j.getArmadura().getGenerador().setEnergia(energiaActual - energiaGastada); // ACTUALIZA ENERGIA RESTANTE
+                j.getArmadura().getCasco().usarConsola("Tiempo estimado de viaje =  ["+ tiempoMin +" minutos]");
+                j.getRadar().setPosiciones(posicionesPro); // ACTUALIZA COORDENADAS ACTUALES
                 boolean botaIzqRota = false, botaDerRota = false;
                 switch(modo){
                     case 1:
@@ -364,67 +434,137 @@ public class JarvisService {
                         j.getArmadura().getCasco().usarSintetizador("Bota derecha ha quedado dañada!");
                     }
                 }
-                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+(energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100);
+                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+Math.round((energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100));
             }
         }
     }
 
 // • Al utilizar los guantes como armas el consumo se triplica durante el tiempo del disparo. (GUANTES: x3 x3) (x6)
-    public void disparar(Jarvis j, int tiempo) {
+    public void disparar(Jarvis j) {
         j.getArmadura().getCasco().usarSintetizador("Inciando disparar ..");
-        float energiaGastada = 0;
-        int modo = 0;
-        if(j.getArmadura().getGuanteDer().isDañado() && j.getArmadura().getGuanteIzq().isDañado()){
-            j.getArmadura().getCasco().usarSintetizador("Imposible realizar acción.. ambos guantes fallan.");
-        }else if(j.getArmadura().getGuanteDer().isDañado() || j.getArmadura().getGuanteIzq().isDañado()){
-            if(j.getArmadura().getGuanteDer().isDañado()){
-                modo = 1;
-                j.getArmadura().getCasco().usarSintetizador("Guante derecho esta fallando, encendiendo guante izquierdo ..");
-                energiaGastada += j.getArmadura().getGuanteIzq().usar(6, tiempo);
+
+        int[] posicionesDis;
+        int xViajeDis;                    
+        int yViajeDis;                    
+        int zViajeDis;
+        int distanciaKmDis;
+        Objetivo objetivo;
+
+        while(true){
+            posicionesDis = elegirCoordenadas();
+            if(!j.getRadar().posicionOcupada(posicionesDis)){   // Si la posicion NO está ocupada por nadie
+                j.getArmadura().getCasco().usarSintetizador("Las coordenadas indicadas no posee ningun objetivo!"); 
+            }else if(!j.getRadar().getMapaCompleto()[posicionesDis[0]][posicionesDis[1]][posicionesDis[2]].isHostil()){ // Sino, Si la posicion contiene un objetivo NO HOSTIL
+                j.getArmadura().getCasco().usarSintetizador("El objetivo indicado es aliado!");
             }else{
-                modo = 2;
-                j.getArmadura().getCasco().usarSintetizador("Guante izquierdo esta fallando, encendiendo guante derecho ..");
-                energiaGastada += j.getArmadura().getGuanteDer().usar(6, tiempo);
+                objetivo = j.getRadar().getMapaCompleto()[posicionesDis[0]][posicionesDis[1]][posicionesDis[2]];
+                j.getArmadura().getCasco().usarSintetizador("Objetivo hostil localizado!");
+                j.getArmadura().getCasco().usarConsola("OJETIVO HOSTIL: [Resistencia = "+objetivo.getResistencia()+"]");
+                xViajeDis = Math.abs(posicionesDis[0] - j.getRadar().getPosiciones()[0]);                    
+                yViajeDis = Math.abs(posicionesDis[1] - j.getRadar().getPosiciones()[1]);                    
+                zViajeDis = Math.abs(posicionesDis[2] - j.getRadar().getPosiciones()[2]);                    
+                distanciaKmDis = xViajeDis + yViajeDis + zViajeDis;
+                break;
             }
-        // SI AMBOS GUANTES ESTAN FUNCIONANDO CORRECTAMENTE
-        }else{  
-            modo = 3;
-            j.getArmadura().getCasco().usarSintetizador("Ambos guantes parecen funcionar, encendiendo..");
-            energiaGastada += j.getArmadura().getGuanteIzq().usar(3, tiempo) + j.getArmadura().getGuanteDer().usar(3, tiempo);
         }
-        if(modo != 0){
-            // SI LA ENERGIA A GASTAR ES MAYOR QUE LA ENERGIA DISPONIBLE
-            if(energiaGastada>j.getArmadura().getGenerador().getEnergia()){
-                j.getArmadura().getCasco().usarSintetizador("Imposible completar accion! No queda energia suficiente..");
-            // SI LA ENERGIA ES SUFICIENTE, SE CONSUME, Y LOS DISPOSITIVOS PUEDEN DAÑARSE
-            }else{
-                j.getArmadura().getCasco().usarSintetizador("Disparando ..");
-                j.getArmadura().getGenerador().setEnergia(j.getArmadura().getGenerador().getEnergia() - energiaGastada);
-                boolean guanteIzqRoto = false, guanteDerRoto = false;
-                switch(modo){
-                    case 1:
-                        guanteIzqRoto = j.getArmadura().getGuanteIzq().dañarse();
-                        break;
-                    case 2:
-                        guanteDerRoto = j.getArmadura().getGuanteDer().dañarse();
-                        break;
-                    case 3:
-                        guanteIzqRoto = j.getArmadura().getGuanteIzq().dañarse();
-                        guanteDerRoto = j.getArmadura().getGuanteDer().dañarse();
-                        break;
-                }
-                if(guanteDerRoto && guanteIzqRoto){
-                    j.getArmadura().getCasco().usarSintetizador("Ambos guantes han quedado dañados!");
-                }else if(guanteDerRoto || guanteIzqRoto){
-                    if(guanteIzqRoto){
-                        j.getArmadura().getCasco().usarSintetizador("Guante izquierdo ha quedado dañado!");
+
+        if(distanciaKmDis<=5){
+            j.getArmadura().getCasco().usarConsola("Preparando sistemas para disparar a una distancia de "+distanciaKmDis+" km");
+
+            int modo;
+            float energiaActual, energiaGastada;
+            int resistenciaActual = objetivo.getResistencia();
+            do{
+                energiaActual = j.getArmadura().getGenerador().getEnergia();
+                energiaGastada = 0;
+                modo = 0;
+
+                if(j.getArmadura().getGuanteDer().isDañado() && j.getArmadura().getGuanteIzq().isDañado()){
+                    j.getArmadura().getCasco().usarSintetizador("Imposible realizar acción.. ambos guantes fallan.");
+                }else if(j.getArmadura().getGuanteDer().isDañado() || j.getArmadura().getGuanteIzq().isDañado()){
+                    if(j.getArmadura().getGuanteDer().isDañado()){
+                        modo = 1;
+                        j.getArmadura().getCasco().usarSintetizador("Guante derecho esta fallando, encendiendo guante izquierdo ..");
+                        energiaGastada += j.getArmadura().getGuanteIzq().usar(6);
+                    }else{
+                        modo = 2;
+                        j.getArmadura().getCasco().usarSintetizador("Guante izquierdo esta fallando, encendiendo guante derecho ..");
+                        energiaGastada += j.getArmadura().getGuanteDer().usar(6);
                     }
-                    if(guanteDerRoto){
-                        j.getArmadura().getCasco().usarSintetizador("Guante derecho ha quedado dañado!");
+                // SI AMBOS GUANTES ESTAN FUNCIONANDO CORRECTAMENTE
+                }else{  
+                    modo = 3;
+                    j.getArmadura().getCasco().usarSintetizador("Ambos guantes parecen funcionar, encendiendo..");
+                    energiaGastada += j.getArmadura().getGuanteIzq().usar(3) + j.getArmadura().getGuanteDer().usar(3);
+                }
+                if(modo != 0){
+                    // SI LA ENERGIA A GASTAR ES MAYOR QUE LA ENERGIA DISPONIBLE
+                    if(energiaGastada > energiaActual){
+                        j.getArmadura().getCasco().usarSintetizador("Imposible completar accion! No queda energia suficiente..");
+                    // SI LA ENERGIA ES SUFICIENTE, SE CONSUME, Y LOS DISPOSITIVOS PUEDEN DAÑARSE
+                    }else{ 
+                        j.getArmadura().getCasco().usarSintetizador("Disparando ..");
+                        j.getArmadura().getGenerador().setEnergia(energiaActual - energiaGastada);
+                        
+                        int danio = 20; // 20 daño maximo // por cada km de distancia -2 daño
+                        if(modo == 1 || modo == 2){ // SI se está usando solo el brazo derecho O solo el brazo izquierdo
+                            danio -= (distanciaKmDis * 2); // (daño - (distanciaKm * 2))
+                        }else if(modo == 3){    // SINO SI se estan usando los dos brazos
+                            danio -= (distanciaKmDis * 2);
+                            danio *= 2; // se multiplica x2 por que se usan los 2 brazos
+                        }
+
+                        
+                        resistenciaActual -= danio; // se aplica el danio
+                        if(resistenciaActual < 0){  // SI la resistencia queda en menos de 0, que se convierta en 0
+                            resistenciaActual = 0;
+                        }
+
+                        j.getArmadura().getCasco().usarConsola("OJETIVO HOSTIL: [Resistencia = "+resistenciaActual+"]");
+                        // ---------------------------------------------------------------------------------------------------------
+                        boolean guanteIzqRoto = false, guanteDerRoto = false;
+                        switch(modo){
+                            case 1:
+                                guanteIzqRoto = j.getArmadura().getGuanteIzq().dañarse();
+                                break;
+                            case 2:
+                                guanteDerRoto = j.getArmadura().getGuanteDer().dañarse();
+                                break;
+                            case 3:
+                                guanteIzqRoto = j.getArmadura().getGuanteIzq().dañarse();
+                                guanteDerRoto = j.getArmadura().getGuanteDer().dañarse();
+                                break;
+                        }
+                        if(guanteDerRoto && guanteIzqRoto){
+                            j.getArmadura().getCasco().usarSintetizador("Ambos guantes han quedado dañados!");
+                        }else if(guanteDerRoto || guanteIzqRoto){
+                            if(guanteIzqRoto){
+                                j.getArmadura().getCasco().usarSintetizador("Guante izquierdo ha quedado dañado!");
+                            }
+                            if(guanteDerRoto){
+                                j.getArmadura().getCasco().usarSintetizador("Guante derecho ha quedado dañado!");
+                            }
+                        }
+                        // -----------------------------------------------------------------------------------------------------------
+                        j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+Math.round((energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100));
                     }
                 }
-                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+(energiaGastada/j.getArmadura().getGenerador().getEnergiaMax())*100);
+            }while(resistenciaActual > 0 && !(modo == 0) && !(energiaActual < (j.getArmadura().getGenerador().getEnergiaMax() * 0.1))); // MIENTRAS que el objetivo esté con vida Y que los guantes esten activos Y que la energiaActual NO sea menor al 10%
+            
+            if(resistenciaActual == 0){
+                j.getArmadura().getCasco().usarConsola("OJETIVO HOSTIL ELIMINADO");
+                j.getRadar().eliminarObjetivo(objetivo);
+            }else if(energiaActual < (j.getArmadura().getGenerador().getEnergiaMax() * 0.1)){
+                j.getArmadura().getCasco().usarSintetizador("Activando acciones evasivas!! Te queda menos del 10% de bateria!");
+                j.getArmadura().getCasco().usarConsola("Alejandose 10km de objetivos hostiles");
+
+                /////////////////////////////////////////////////////////////// TERMINAR
+
+            }else if(modo == 0){
+                j.getArmadura().getCasco().usarConsola("Anulando ataque, ambos guantes han quedado dañados");
             }
+        }else{
+            j.getArmadura().getCasco().usarConsola("Anulando ataque, la distancia de alcance maximo es de 5 km");
         }
     }
 
@@ -432,10 +572,33 @@ public class JarvisService {
 // • Al volar la armadura hará un uso intensivo(x3) de las botas y de los guantes un uso normal(x2)
 //   consumiendo el triple de la energía establecida para las botas y el doble para los guantes.
                                     // (GUANTES: x2 x2) (x4) (BOTAS: x3 x3) (x6)
-    public void volar(Jarvis j, int tiempo) {
+    // VOLAR = (ambos guantes y botas) 300km por hora | 5km por minuto 
+            // GUANTES 120km x hr [2km x min] | BOTAS 180km x hr [3km x min]
+            // GUANTE 60km x hr [1km x min] + BOTA 90km x hr [1.5km x min] = 2.5km x min
+
+    public void volar(Jarvis j) {
         j.getArmadura().getCasco().usarSintetizador("Inciando volar ..");
+        float energiaActual = j.getArmadura().getGenerador().getEnergia();
         float energiaConsumida = 0;
         int modoGuantes = 0, modoBotas = 0;
+
+        int[] posicionesVol = elegirCoordenadas();
+        while(j.getRadar().posicionOcupada(posicionesVol)){
+            j.getArmadura().getCasco().usarSintetizador("Las coordenadas indicadas estan ocupadas!");
+            posicionesVol = elegirCoordenadas();
+        }
+        int xViajeVol = Math.abs(posicionesVol[0] - j.getRadar().getPosiciones()[0]);                    
+        int yViajeVol = Math.abs(posicionesVol[1] - j.getRadar().getPosiciones()[1]);                    
+        int zViajeVol = Math.abs(posicionesVol[2] - j.getRadar().getPosiciones()[2]);                    
+        int distanciaKmVol = xViajeVol + yViajeVol + zViajeVol;
+        
+        j.getArmadura().getCasco().usarConsola("Preparando sistemas para volar "+distanciaKmVol+" km");
+        float tiempoMin = 0;
+        
+        j.getRadar().setPosiciones(posicionesVol);
+
+        // 5km x min | 3.5km x min | 4km x min | 2.5km x min
+
         // SI TODAS LAS PIEZAS ESTAN DAÑADAS
         if(j.getArmadura().getGuanteDer().isDañado() && j.getArmadura().getGuanteIzq().isDañado() && j.getArmadura().getBotaDer().isDañado() && j.getArmadura().getBotaIzq().isDañado()){ 
             j.getArmadura().getCasco().usarSintetizador("Imposible realizar accion.. ambos guantes y botas fallan.");
@@ -449,7 +612,8 @@ public class JarvisService {
                 }else{
                     modoGuantes = 2;
                     j.getArmadura().getCasco().usarSintetizador("Guante derecho encendido.");
-                    energiaConsumida += j.getArmadura().getGuanteDer().usar(4, tiempo);
+                    tiempoMin = distanciaKmVol / 1;
+                    energiaConsumida += j.getArmadura().getGuanteDer().usar(4, tiempoMin);
                 }
                 // SI EL GUANTE IZQUIERDO FALLA
                 if(j.getArmadura().getGuanteIzq().isDañado()){
@@ -457,13 +621,15 @@ public class JarvisService {
                 }else{
                     modoGuantes = 1;
                     j.getArmadura().getCasco().usarSintetizador("Guante izquierdo encendido.");
-                    energiaConsumida += j.getArmadura().getGuanteIzq().usar(4, tiempo);
+                    tiempoMin = distanciaKmVol / 1;
+                    energiaConsumida += j.getArmadura().getGuanteIzq().usar(4, tiempoMin);
                 }
             // SI LOS 2 GUANTES FUNCIONAN
             }else{
                 modoGuantes = 3;
                 j.getArmadura().getCasco().usarSintetizador("Ambos guantes se han encendido.");
-                energiaConsumida += j.getArmadura().getGuanteIzq().usar(2, tiempo) + j.getArmadura().getGuanteDer().usar(2, tiempo);
+                tiempoMin = distanciaKmVol / 2;
+                energiaConsumida += j.getArmadura().getGuanteIzq().usar(2, tiempoMin) + j.getArmadura().getGuanteDer().usar(2, tiempoMin);
             }
             // SI ALGUNA DE LAS BOTAS FALLAN
             if(j.getArmadura().getBotaDer().isDañado() || j.getArmadura().getBotaIzq().isDañado()){
@@ -473,7 +639,8 @@ public class JarvisService {
                 }else{
                     modoBotas = 2;
                     j.getArmadura().getCasco().usarSintetizador("Bota derecha encendida.");
-                    energiaConsumida += j.getArmadura().getBotaDer().usar(6, tiempo);
+                    tiempoMin = (float) (distanciaKmVol / 1.5);
+                    energiaConsumida += j.getArmadura().getBotaDer().usar(6, tiempoMin);
                 }
                 // SI LA BOTA IZQUIERDA FALLA
                 if(j.getArmadura().getBotaIzq().isDañado()){
@@ -481,18 +648,23 @@ public class JarvisService {
                 }else{
                     modoBotas = 1;
                     j.getArmadura().getCasco().usarSintetizador("Bota izquierda encendida.");
-                    energiaConsumida += j.getArmadura().getBotaIzq().usar(6, tiempo);
+                    tiempoMin = (float) (distanciaKmVol / 1.5);
+                    energiaConsumida += j.getArmadura().getBotaIzq().usar(6, tiempoMin);
                 }
             // SI LAS 2 BOTAS FUNCIONAN
             }else{
                 modoBotas = 3;
                 j.getArmadura().getCasco().usarSintetizador("Ambas botas se han encendido.");
-                energiaConsumida += j.getArmadura().getBotaIzq().usar(3, tiempo) + j.getArmadura().getBotaDer().usar(3, tiempo);
+                tiempoMin = (float) (distanciaKmVol / 3);
+                energiaConsumida += j.getArmadura().getBotaIzq().usar(3, tiempoMin) + j.getArmadura().getBotaDer().usar(3, tiempoMin);
             }
         // SI TODAS LAS PIEZAS ESTAN FUNCIONANDO CORRECTAMENTE
         } else {  
+            modoBotas = 3;
+            modoGuantes = 3;
             j.getArmadura().getCasco().usarSintetizador("Ambos guantes y botas parecen funcionar, encendiendo..");
-            energiaConsumida += j.getArmadura().getGuanteIzq().usar(2, tiempo) + j.getArmadura().getGuanteDer().usar(2, tiempo) + j.getArmadura().getBotaIzq().usar(3, tiempo) + j.getArmadura().getBotaDer().usar(3, tiempo);
+            tiempoMin = (float) (distanciaKmVol / 5);
+            energiaConsumida += j.getArmadura().getGuanteIzq().usar(2, tiempoMin) + j.getArmadura().getGuanteDer().usar(2, tiempoMin) + j.getArmadura().getBotaIzq().usar(3, tiempoMin) + j.getArmadura().getBotaDer().usar(3, tiempoMin);
         }
 
         boolean botaIzqRota = false, botaDerRota = false;
@@ -500,12 +672,14 @@ public class JarvisService {
         // SI AL MENOS 1 GUANTE Y 1 BOTA ESTAN ENCENDIDOS
         if(modoBotas != 0 && modoGuantes != 0){
             // SI LA ENERGIA A GASTAR ES MAYOR QUE LA ENERGIA DISPONIBLE
-            if(energiaConsumida>j.getArmadura().getGenerador().getEnergia()){
+            if(energiaConsumida > energiaActual){
                 j.getArmadura().getCasco().usarSintetizador("Imposible completar accion! No queda energia suficiente..");
             // SI LA ENERGIA ES SUFICIENTE, SE CONSUME, Y LOS DISPOSITIVOS PUEDEN DAÑARSE
             }else{
                 j.getArmadura().getCasco().usarSintetizador("Volando ..");
-                j.getArmadura().getGenerador().setEnergia(j.getArmadura().getGenerador().getEnergia() - energiaConsumida);
+                j.getArmadura().getCasco().usarConsola("Tiempo estimado de viaje =  ["+ tiempoMin +" minutos]");
+
+                j.getArmadura().getGenerador().setEnergia(energiaActual - energiaConsumida);
                 switch(modoGuantes){
                     case 1:
                         guanteIzqRoto = j.getArmadura().getGuanteIzq().dañarse();
@@ -550,7 +724,7 @@ public class JarvisService {
                         j.getArmadura().getCasco().usarSintetizador("Bota derecha ha quedado dañada!");
                     }
                 }
-                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+(energiaConsumida/j.getArmadura().getGenerador().getEnergiaMax())*100);
+                j.getArmadura().getCasco().usarConsola("Energia consumida = - %"+Math.round((energiaConsumida/j.getArmadura().getGenerador().getEnergiaMax())*100));
             }
         // SI 2 BOTAS FALLAN O 2 GUANTES FALLAN
         }else{
@@ -571,7 +745,7 @@ public class JarvisService {
 // consola. Ejecutar varias acciones y mostrar el estado de la misma.
 
     public void estadoBateria(Jarvis j){
-        j.getArmadura().getCasco().usarConsola("-Estado de la Batería-\nEnergía del reactor = "+(j.getArmadura().getGenerador().getEnergia()/Float.MAX_VALUE)*100+"%");
+        j.getArmadura().getCasco().usarConsola("-Estado de la Batería-\nEnergía del reactor = "+Math.round((j.getArmadura().getGenerador().getEnergia()/j.getArmadura().getGenerador().getEnergiaMax())*100)+"%");
     }
 
 // Mostrar Información del Reactor
@@ -605,6 +779,8 @@ public class JarvisService {
         boolean consolaDañada = false, sintetizadorDañado = false;
         boolean guanteDerDañado = false, guanteIzqDañado = false;
         boolean botaDerDañada = false, botaIzqDañada = false;
+
+        // SI ALGUNA PIEZA ESTA DAÑADA
         if(a.getCasco().isDañado() || a.getBotaDer().isDañado() || a.getBotaIzq().isDañado() || a.getGuanteDer().isDañado() || a.getGuanteIzq().isDañado()){
             j.getArmadura().getCasco().usarSintetizador("Se han detectado piezas daniadas...");
             // SI LA CONSOLA Y EL SINTETIZADOR ESTAN DAÑADOS
@@ -622,6 +798,9 @@ public class JarvisService {
                     sintetizadorDañado = true;
                 }
             }
+            // if(a.getGuanteDer().isDestruido() && a.getGuanteIzq().isDestruido()){
+            //     j.getArmadura().getCasco().usarConsola("- GUANTES => [DERECHO] [IZQUIERDO] DESTRUIDOS");
+            // }
             if(a.getGuanteDer().isDañado() && a.getGuanteIzq().isDañado()){
                 j.getArmadura().getCasco().usarConsola("- GUANTES => [DERECHO] [IZQUIERDO] DANIADOS");
                 guanteDerDañado = true;
@@ -648,7 +827,9 @@ public class JarvisService {
                     botaIzqDañada = true;
                 }
             }
-            // --------------------------------------------------------------------------
+
+            // -----------------------------------------------------------------------------------------------------------------------
+
             if(consolaDañada){
                 j.getArmadura().getCasco().usarConsola("- Reparando [Consola]");
                 // MIENTRAS LA CONSOLA ESTE DAÑADA PERO NO DESTRUIDA
@@ -692,6 +873,7 @@ public class JarvisService {
                         s.susurrar("El guante derecho ha sido reparado!");
                     }else if(probabilidad <= 30){   // SE DESTRUYE
                         j.getArmadura().getGuanteDer().getRepulsor().setDestruido(true);
+                        j.getArmadura().getGuanteDer().getRepulsor().setDañado(false);
                         s.susurrar("Error grave! El guante derecho se ha destruido!");
                     }else{
                         c.mostrar("Reintentando..");
@@ -705,6 +887,7 @@ public class JarvisService {
                         s.susurrar("El guante izquierdo ha sido reparado!");
                     }else if(probabilidad <= 30){   // SE DESTRUYE
                         j.getArmadura().getGuanteIzq().getRepulsor().setDestruido(true);
+                        j.getArmadura().getGuanteIzq().getRepulsor().setDañado(false);
                         s.susurrar("Error grave! El guante izquierdo se ha destruido!");
                     }else{
                         c.mostrar("Reintentando..");
@@ -722,6 +905,7 @@ public class JarvisService {
                             s.susurrar("El guante derecho ha sido reparado!");
                         }else if(probabilidad <= 30){   // SE DESTRUYE
                             j.getArmadura().getGuanteDer().getRepulsor().setDestruido(true);
+                            j.getArmadura().getGuanteDer().getRepulsor().setDañado(false);
                             s.susurrar("Error grave! El guante derecho se ha destruido!");
                         }else{
                             c.mostrar("Reintentando..");
@@ -737,6 +921,7 @@ public class JarvisService {
                             s.susurrar("El guante izquierdo ha sido reparado!");
                         }else if(probabilidad <= 30){   // SE DESTRUYE
                             j.getArmadura().getGuanteIzq().getRepulsor().setDestruido(true);
+                            j.getArmadura().getGuanteIzq().getRepulsor().setDañado(false);
                             s.susurrar("Error grave! El guante izquierdo se ha destruido!");
                         }else{
                             c.mostrar("Reintentando..");
@@ -755,6 +940,7 @@ public class JarvisService {
                         s.susurrar("La bota derecha ha sido reparada!");
                     }else if(probabilidad <= 30){   // SE DESTRUYE
                         j.getArmadura().getBotaDer().getPropulsor().setDestruido(true);
+                        j.getArmadura().getBotaDer().getPropulsor().setDañado(false);
                         s.susurrar("Error grave! La bota derecha se ha destruido!");
                     }else{
                         c.mostrar("Reintentando..");
@@ -768,6 +954,7 @@ public class JarvisService {
                         s.susurrar("La bota izquierda ha sido reparada!");
                     }else if(probabilidad <= 30){   // SE DESTRUYE
                         j.getArmadura().getBotaIzq().getPropulsor().setDestruido(true);
+                        j.getArmadura().getBotaIzq().getPropulsor().setDañado(false);
                         s.susurrar("Error grave! La bota izquierda se ha destruido!");
                     }else{
                         c.mostrar("Reintentando..");
@@ -785,6 +972,7 @@ public class JarvisService {
                             s.susurrar("La bota derecha ha sido reparada!");
                         }else if(probabilidad <= 30){   // SE DESTRUYE
                             j.getArmadura().getBotaDer().getPropulsor().setDestruido(true);
+                            j.getArmadura().getBotaDer().getPropulsor().setDañado(false);
                             s.susurrar("Error grave! La bota derecha se ha destruido!");
                         }else{
                             c.mostrar("Reintentando..");
@@ -800,6 +988,7 @@ public class JarvisService {
                             s.susurrar("La bota izquierda ha sido reparada!");
                         }else if(probabilidad <= 30){   // SE DESTRUYE
                             j.getArmadura().getBotaIzq().getPropulsor().setDestruido(true);
+                            j.getArmadura().getBotaIzq().getPropulsor().setDañado(false);
                             s.susurrar("Error grave! La bota izquierda se ha destruido!");
                         }else{
                             c.mostrar("Reintentando..");
@@ -824,14 +1013,15 @@ public class JarvisService {
         j.setRadar(new Radar());
 
         j.getArmadura().getCasco().usarConsola("- Inciando simulador de combate -");
-        int cantObj;
+
+        int cantEnemy;
         do {
             try {
                 System.out.print("Ingrese cantidad de objetivos hostiles => ");
-                cantObj = read.nextInt();
+                cantEnemy = read.nextInt();
                 read.nextLine();
-                if(cantObj>499999){
-                    System.out.println("Cantidad de objetivos mayor al soportado por el simulador.");
+                if(cantEnemy>50){
+                    System.out.println("Cantidad de objetivos mayor al soportado por el simulador. (50)");
                 }else{
                     break;
                 }
@@ -840,11 +1030,152 @@ public class JarvisService {
                 read.nextLine();
             }
         }while(true);
-        int cantAmi = cantObj / 2;
-        
-        
-        /////////////////////////////////////////////////////////////////////////////////////
+       
+        for(int i=0; i<cantEnemy; i++){ 
+            // mientras que la posicion asignada al objetivo ya este ocupada en el mapa
+            int x,y,z;
+            do{
+                x = (int) (Math.random()*50);
+                y = (int) (Math.random()*50);
+                z = (int) (Math.random()*50);
+            }while(j.getRadar().posicionOcupada(x,y,z));
+            int resistencia = (int) ((Math.random() * 50) + 51);
+            j.getRadar().insertarObjetivo(new Objetivo(x, y, z, resistencia, true)); // el enemigo se aloja en el mapa del radar
+        }
 
+        int cantAlly = cantEnemy/2;
+        for(int i=0; i<cantAlly; i++){
+            // mientras que la posicion asignada al objetivo ya este ocupada en el mapa
+            int x,y,z;
+            do{
+                x = (int) (Math.random()*50);
+                y = (int) (Math.random()*50);
+                z = (int) (Math.random()*50);
+            }while(j.getRadar().posicionOcupada(x,y,z));
+            int resistencia = (int) ((Math.random() * 50) + 51);
+            j.getRadar().insertarObjetivo(new Objetivo(x, y, z, resistencia, false)); // el aliado se aloja en el mapa del radar
+        }
+
+        j.getArmadura().getCasco().usarConsola("Mapa listo");
+
+        boolean salir = false;
+        do{
+            System.out.println("-----------------------------------------------------------");
+            System.out.println("OBJETIVOS : [\u001B[31mHOSTILES\u001B[0m = "+j.getRadar().getCantObjetivosHostiles()+" | \u001B[32mALIADOS\u001B[0m = "+j.getRadar().getCantObjetivosAliados()+"]\n");
+            System.out.println("\u001B[31mLista objetivos hostiles:\u001B[0m\n"+j.getRadar().getListaObjetivosHostiles());
+            System.out.println("\u001B[32mLista objetivos aliados:\u001B[0m\n"+j.getRadar().getListaObjetivosAliados());
+            System.out.println(j.getRadar().vista());
+            System.out.println("POSICION ACTUAL = [X:"+j.getRadar().getX()+" | Y:"+j.getRadar().getY()+" | Z:"+j.getRadar().getZ()+"]");
+            System.out.println("-----------------------------------------------------------");
+            j.getArmadura().getCasco().usarConsola("- MENU SIMULADOR DE COMBATE -" +
+                                                        "\n1. Menu Jarvis" +
+                                                        "\n2. Disparar" +
+                                                        "\n3. Caminar" +
+                                                        "\n4. Correr" +
+                                                        "\n5. Propulsarse" +
+                                                        "\n6. Volar" +
+                                                        "\n7. Finalizar");
+            System.out.print("Ingrese opcion => ");
+            int menu_op = read.nextInt();
+            read.nextLine();
+            switch(menu_op){
+                case 1: 
+                    menuJarvis(j);
+                    break;
+                case 2:
+                    disparar(j);         
+                    break;
+                case 3:
+                    caminar(j);
+                    break;
+                case 4:
+                    correr(j); 
+                    break;
+                case 5:
+                    propulsarse(j);
+                    break;
+                case 6:
+                    volar(j); 
+                    break;
+                case 7:
+                    System.out.println("\u001B[31mFinalizando Jarvis..\u001B[0m");
+                    salir = true;
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta");
+            }
+        }while(j.getArmadura().isFuncional() && !salir);
+        
+        if(!j.getArmadura().isFuncional()){
+            System.out.println("\u001B[31mLa armadura ha dejado de ser funcional!" +
+                                            "\nFinalizando Jarvis..\u001B[0m");
+        }
+    }
+
+    public int[] elegirCoordenadas(){
+        int x,y,z;
+        do {
+            try{
+                do{
+                    System.out.print("Ingrese coordenada X => ");
+                    x = read.nextInt();
+                    read.nextLine();
+                    System.out.print("Ingrese coordenada Y => ");
+                    y = read.nextInt();
+                    read.nextLine();
+                    System.out.print("Ingrese coordenada Z => ");
+                    z = read.nextInt();
+                    read.nextLine();
+                    if(x>49 || x<0 || y>49 || y<0 || z>49 || z<0){
+                        System.out.println("\u001B[31mCoordenadas invalidas..\u001B[0m");
+                    }else{
+                        break;
+                    }
+                }while(true);
+                break; 
+            }catch(InputMismatchException e){
+                System.out.println("Error: No se ha ingresado un número válido. Intente nuevamente.");
+                read.nextLine();
+            }
+        }while(true);
+        int[] posiciones = new int[3];
+        posiciones[0] = x;
+        posiciones[1] = y;
+        posiciones[2] = z;
+        return posiciones;
+    }
+
+    public int[] atacarCoordenadas(){
+        int x,y,z;
+        do {
+            try{
+                do{
+                    System.out.print("Ingrese coordenada X => ");
+                    x = read.nextInt();
+                    read.nextLine();
+                    System.out.print("Ingrese coordenada Y => ");
+                    y = read.nextInt();
+                    read.nextLine();
+                    System.out.print("Ingrese coordenada Z => ");
+                    z = read.nextInt();
+                    read.nextLine();
+                    if(x>49 || x<0 || y>49 || y<0 || z>49 || z<0){
+                        System.out.println("\u001B[31mCoordenadas invalidas..\u001B[0m");
+                    }else{
+                        break;
+                    }
+                }while(true);
+                break; 
+            }catch(InputMismatchException e){
+                System.out.println("Error: No se ha ingresado un número válido. Intente nuevamente.");
+                read.nextLine();
+            }
+        }while(true);
+        int[] posiciones = new int[3];
+        posiciones[0] = x;
+        posiciones[1] = y;
+        posiciones[2] = z;
+        return posiciones;
     }
 
 }

@@ -15,7 +15,7 @@ public class Propulsor extends Dispositivo {
         this.consumo = consumo;
     }
 
-    public float usar(int intensidad, int tiempo){
+    public float usar(int intensidad, float tiempo){
         return (consumo * tiempo) * intensidad;
     }
 

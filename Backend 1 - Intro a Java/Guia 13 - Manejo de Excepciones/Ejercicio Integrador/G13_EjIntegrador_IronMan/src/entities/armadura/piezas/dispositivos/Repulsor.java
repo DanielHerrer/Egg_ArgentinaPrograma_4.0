@@ -16,7 +16,11 @@ public class Repulsor extends Dispositivo {
         this.consumo = consumo;
     }
 
-    public float usar(int intensidad, int tiempo){
+    public float usar(int intensidad){  // usar para disparar
+        return (consumo * intensidad);
+    }
+
+    public float usar(int intensidad, float tiempo){    // usar para moverse
         return (consumo * tiempo) * intensidad;
     }
 
