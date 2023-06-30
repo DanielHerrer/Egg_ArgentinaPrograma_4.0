@@ -559,6 +559,10 @@ public class JarvisService {
                 j.getArmadura().getCasco().usarConsola("Alejandose 10km de objetivos hostiles");
 
                 /////////////////////////////////////////////////////////////// TERMINAR
+                // ACCIONES EVASIVAS ITERAR MATRIZ 3D 
+                // hacer funcion booleana que reciba una pocision y determine si es una posicion segura
+
+                j.getRadar().evadir();
 
             }else if(modo == 0){
                 j.getArmadura().getCasco().usarConsola("Anulando ataque, ambos guantes han quedado dañados");

@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS nba;
 #creamos la base de datos
 CREATE DATABASE IF NOT EXISTS nba;
 
@@ -497,7 +496,7 @@ CREATE TABLE IF NOT EXISTS estadisticas (
   Tapones_por_partido float DEFAULT NULL,
   Rebotes_por_partido float DEFAULT NULL,
   PRIMARY KEY (temporada,jugador),
-  FOREIGN KEY (jugador) REFERENCES jugadores(Codigo)
+  FOREIGN KEY (jugador) REFERENCES Jugadores(Codigo)
 );
 
 INSERT INTO estadisticas VALUES ('03/04',283,5.9,2.2,1.54,1.6);

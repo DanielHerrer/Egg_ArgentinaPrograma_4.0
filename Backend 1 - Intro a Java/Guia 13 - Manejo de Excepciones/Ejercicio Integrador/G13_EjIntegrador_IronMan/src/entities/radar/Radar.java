@@ -81,6 +81,8 @@ public class Radar {
         this.mapaCompleto = mapaCompleto;
     }
 
+// ---------------------------------------------------------------------------------------------------------------
+
     public String vista(){
         String vista = "";
         int xView = this.x - 5;
@@ -109,6 +111,33 @@ public class Radar {
             vista += "\n";
         }
         return vista;
+    }
+
+    public void evadir(){   // SIN TERMINAR
+        int xView = this.x - 10;
+        int yView = this.y - 10;
+        int zView = this.z;
+        for(int yi = 0; yi<11; yi++){
+            for(int xi = 0; xi<11; xi++){
+                // try{
+                //     if(yi==5 && xi==5){
+                //         vista += "\u001B[36m[O]\u001B[0m"; // el centro del radar
+                //     }else if(mapaCompleto[xView][yView][zView] == null){
+                //         vista += "[ ]"; // si no hay nada
+                //     }else if(mapaCompleto[xView][yView][zView].isHostil()){
+                //         vista += "[\u001B[31mX\u001B[0m]"; // "X" si es enemigo
+                //     }else if(!mapaCompleto[xView][yView][zView].isHostil()){
+                //         vista += "[\u001B[32m#\u001B[0m]"; // "#" si es aliado
+                //     }
+                // }catch(IndexOutOfBoundsException e){
+                //     vista += "[\u001B[33m-\u001B[0m]"; // "-" si es fuera del mapa
+                // }finally{
+                //     xView ++;
+                // }
+            }
+            xView -= 11;
+            yView ++;
+        }
     }
 
     public int[] getPosiciones(){
@@ -204,6 +233,22 @@ public class Radar {
         return listaHostiles;
     }
 
+    public int getCantObjetivosAliados(){
+        int cantAliados = 0;
+        for(int i = 0; i<mapaCompleto.length; i++){
+            for(int j = 0; j<mapaCompleto[i].length; j++){
+                for(int k = 0; k<mapaCompleto[j].length; k++){
+                    if(mapaCompleto[i][j][k] instanceof Objetivo){
+                        if(!mapaCompleto[i][j][k].isHostil()){
+                            cantAliados++;
+                        }
+                    }
+                } 
+            }
+        }
+        return cantAliados;
+    }
+
     public String getListaObjetivosAliados(){
         String listaAliados = "";
         for(int i = 0; i<mapaCompleto.length; i++){
@@ -220,21 +265,7 @@ public class Radar {
         return listaAliados;
     }
 
-    public int getCantObjetivosAliados(){
-        int cantAliados = 0;
-        for(int i = 0; i<mapaCompleto.length; i++){
-            for(int j = 0; j<mapaCompleto[i].length; j++){
-                for(int k = 0; k<mapaCompleto[j].length; k++){
-                    if(mapaCompleto[i][j][k] instanceof Objetivo){
-                        if(!mapaCompleto[i][j][k].isHostil()){
-                            cantAliados++;
-                        }
-                    }
-                } 
-            }
-        }
-        return cantAliados;
-    }
+// ---------------------------------------------------------------------------------------------------------------
 
     public Objetivo[][][] getMapaCompleto() {
         return mapaCompleto;
