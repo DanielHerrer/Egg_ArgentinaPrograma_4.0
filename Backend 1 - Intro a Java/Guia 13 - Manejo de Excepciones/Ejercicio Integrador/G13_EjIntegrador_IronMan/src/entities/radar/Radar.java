@@ -83,7 +83,7 @@ public class Radar {
 
 // ---------------------------------------------------------------------------------------------------------------
 
-    public String vista(){
+    public String vista() {
         String vista = "";
         int xView = this.x - 5;
         int yView = this.y - 5;
@@ -113,31 +113,51 @@ public class Radar {
         return vista;
     }
 
-    public void evadir(){   // SIN TERMINAR
-        int xView = this.x - 10;
-        int yView = this.y - 10;
-        int zView = this.z;
-        for(int yi = 0; yi<11; yi++){
-            for(int xi = 0; xi<11; xi++){
-                // try{
-                //     if(yi==5 && xi==5){
-                //         vista += "\u001B[36m[O]\u001B[0m"; // el centro del radar
-                //     }else if(mapaCompleto[xView][yView][zView] == null){
-                //         vista += "[ ]"; // si no hay nada
-                //     }else if(mapaCompleto[xView][yView][zView].isHostil()){
-                //         vista += "[\u001B[31mX\u001B[0m]"; // "X" si es enemigo
-                //     }else if(!mapaCompleto[xView][yView][zView].isHostil()){
-                //         vista += "[\u001B[32m#\u001B[0m]"; // "#" si es aliado
-                //     }
-                // }catch(IndexOutOfBoundsException e){
-                //     vista += "[\u001B[33m-\u001B[0m]"; // "-" si es fuera del mapa
-                // }finally{
-                //     xView ++;
-                // }
+    public int[] posicionEvasion() { 
+        for(int z=0; z<50; z++){
+            for(int y=0; y<50; y++){
+                for(int x=0; x<50; x++){
+                    if(posicionSegura(x, y, z)){
+                        System.out.println("Posición segura: ("+x+", "+y+", "+z+")");
+                        int[] posiciones = new int[3];
+                        posiciones[0] = x;
+                        posiciones[1] = y;
+                        posiciones[2] = z;
+                        return posiciones;
+                    }
+                }
             }
-            xView -= 11;
-            yView ++;
         }
+        return null;
+    }
+
+    public boolean posicionSegura(int x, int y, int z) {
+        
+        int xView = x - 10;
+        int yView = y - 10;
+        int zView = z - 10;
+        
+        for(int zi=0; zi<21; zi++){
+            for(int yi = 0; yi<21; yi++){
+                for(int xi = 0; xi<21; xi++){
+                    try{   
+                        if(mapaCompleto[xView][yView][zView] != null){
+                            return false;
+                        }
+                    }catch(IndexOutOfBoundsException e){
+                        //
+                    }finally{
+                        xView++;
+                    }
+                }
+                xView-=21;
+                yView++;
+            }
+            yView-=21;
+            zView++;
+        }
+
+        return true;
     }
 
     public int[] getPosiciones(){
