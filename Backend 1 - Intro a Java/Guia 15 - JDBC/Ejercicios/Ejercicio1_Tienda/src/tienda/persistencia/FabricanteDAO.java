@@ -19,8 +19,6 @@ public class FabricanteDAO extends DAO {
 
         } catch(Exception e) {
             throw e;
-        } finally {
-            desconectarBase();
         }
     }
 
@@ -128,7 +126,7 @@ public class FabricanteDAO extends DAO {
 
     public Collection<Fabricante> listarFabricantes() throws Exception {
         try{
-            String sql = "SELECT * FROM producto";
+            String sql = "SELECT * FROM fabricante";
             consultarBase(sql);
 
             Fabricante f = null;

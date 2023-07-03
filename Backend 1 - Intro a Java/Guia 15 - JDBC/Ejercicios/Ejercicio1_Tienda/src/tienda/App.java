@@ -39,9 +39,10 @@ public class App {
                         "4. Buscar y listar todos los Portatiles de la tabla producto.\n" + 
                         "5. Listar el nombre y el precio del producto mas barato.\n" + 
                         "6. Ingresar un producto a la base de datos.\n" + 
-                        "7. Ingresar un fabricante a la base de datos (NO FUNCIONA)\n" + 
-                        "8. Editar un producto con datos a eleccion.\n" + 
-                        "9. Salir.");
+                        "7. Editar un producto con datos a eleccion.\n" + 
+                        "8. Ingresar un fabricante a la base de datos\n" + 
+                        "9. Listar todos los fabricantes\n" + 
+                        "10. Salir.");
                 System.out.print("Ingrese una opcion => ");
                 opcion = read.nextInt();
                 read.nextLine();
@@ -65,12 +66,15 @@ public class App {
                         productoSv.ejecutarNuevoProducto();
                         break;
                     case 7:
-                        fabricanteSv.ejecutarNuevoFabricante();
-                        break;
-                    case 8:
                         productoSv.ejecutarModificarProducto();
                         break;
+                    case 8:
+                        fabricanteSv.ejecutarNuevoFabricante();
+                        break;
                     case 9:
+                        fabricanteSv.ejecutarListarFabricantes();
+                        break;
+                    case 10:
                         salir = true;
                         System.out.println("Finalizando..");
                         break;

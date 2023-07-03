@@ -1,5 +1,6 @@
 package tienda.servicios;
 
+import java.util.Collection;
 import java.util.Scanner;
 
 import tienda.entidades.Fabricante;
@@ -66,12 +67,27 @@ public class FabricanteService {
             System.out.println("Nuevo fabricante:");
             System.out.print("Ingrese un nombre de fabricante => ");
             String nombre = read.nextLine();
-            read.nextLine();
 
             crearFabricante(nombre);
 
         }catch(Exception e){
             throw e;
+        }
+    }
+
+// EXTRA
+    public void ejecutarListarFabricantes(){
+        try{
+            Collection<Fabricante> fabricantes = dao.listarFabricantes();
+
+            System.out.println("----------------------------------------------");
+            System.out.println("Fabricantes: (*)");
+            for (Fabricante f : fabricantes) {
+                System.out.println("codigo = "+f.getCodigo()+" || nombre = "+f.getNombre());
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 

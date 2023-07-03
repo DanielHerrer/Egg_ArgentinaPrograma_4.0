@@ -8,16 +8,6 @@ import tienda.entidades.Producto;
 
 public final class ProductoDAO extends DAO {
 
-    // public boolean existeProducto(int codigo) throws Exception {
-    //     try{
-    //         Producto p = buscarProductoPorCodigo(codigo);
-    //         if()
-    //     }catch(Exception e){
-    //         throw e;
-    //     }
-
-    // }
-
     public void guardarProducto(Producto producto) throws Exception {
 
         try {

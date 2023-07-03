@@ -105,3 +105,56 @@ INSERT INTO comentarios VALUES(4,2,'Si quieres encontrar un ambiente ingles aut�
 INSERT INTO comentarios VALUES(5,3,'Si vienes a divertirte, y te gusta la libertad, has encontrado el lugar indicado. Horarios muy flexibles');
 INSERT INTO comentarios VALUES(6,3,'Si quieres que no te hagan caso, con esta familia estás de suerte. Ningun tipo de contacto con ellos');
 INSERT INTO comentarios VALUES(7,4,'Una familia adorable, buen trato, mucha comunicación, cuando vuelvas hablarás inglés por los codos de tanto practicar');
+
+SELECT * FROM casas;
+SELECT * FROM clientes;
+SELECT * FROM comentarios;
+SELECT * FROM estancias;
+SELECT * FROM familias;
+
+-- a) Listar aquellas familias que tienen al menos 3 hijos, y con edad máxima inferior a 10 años.
+SELECT * FROM familias WHERE num_hijos >= 3 AND edad_maxima < 10;
+
+-- b) Buscar y listar las casas disponibles para el periodo comprendido entre el 1 de agosto de
+--     2020 y el 31 de agosto de 2020 en Reino Unido.
+SELECT * FROM casas WHERE fecha_desde >= '2020-08-01' AND fecha_hasta <= '2020-08-31' AND pais = 'Reino Unido';
+
+-- c) Encuentra todas aquellas familias cuya dirección de mail sea de Hotmail.
+SELECT * FROM familias WHERE email LIKE '%@hotmail%';
+
+-- d) Consulta la BD para que te devuelva aquellas casas disponibles a partir de una fecha dada
+-- y un número de días específico.
+SELECT * FROM casas WHERE (fecha_desde >= '2020-07-05') AND (5 BETWEEN tiempo_minimo AND tiempo_maximo); 
+
+-- e) Listar los datos de todos los clientes que en algún momento realizaron una estancia y la
+-- descripcion de la casa donde la realizaron.
+SELECT cli.id_cliente, cli.nombre, cli.pais AS pais_Cliente, cli.ciudad AS ciudad_Cliente,
+       cas.tipo_vivienda AS tipo_Casa, cas.pais AS pais_Casa,
+       cas.ciudad AS ciudad_Casa, cas.calle AS calle_Casa,
+       cas.numero AS num_Calle
+FROM clientes cli
+INNER JOIN estancias est ON cli.id_cliente = est.id_cliente
+INNER JOIN casas cas ON est.id_casa = cas.id_casa;
+
+-- g) Debido a la devaluacion de la libra esterlina con respecto al euro se desea incrementar 
+-- el precio por dia en un 5% de todas las casas del Reino Unido. Mostar los precios actualizados.
+UPDATE casas SET precio_habitacion = precio_habitacion * 1.05 WHERE id_casa = 1;
+
+-- h) Obtener el numero de casas que existen para cada uno de los paises diferentes.
+SELECT pais, COUNT(id_casa) FROM casas GROUP BY pais;
+
+-- i) Busca y listar aquellas casas del Reino Unido de las que se ha dicho de ellas (comentarios)
+-- que están ‘limpias’.
+SELECT * FROM casas cas INNER JOIN comentarios com ON cas.id_casa = com.id_casa
+	WHERE cas.pais = 'Reino Unido' AND com.comentario LIKE '%limpia%' GROUP BY cas.id_casa;
+
+-- j) Insertar nuevos datos en la tabla estancias verificando la disponibilidad de las fechas.
+
+SELECT cas.* FROM casas cas 
+INNER JOIN estancias est ON cas.id_casa = est.id_casa
+WHERE (cas.fecha_desde <= '2020-09-01') 
+AND (cas.fecha_hasta >= '2020-09-30')
+AND ('2020-07-01' NOT BETWEEN est.fecha_desde AND est.fecha_hasta)
+AND ('2020-07-30' NOT BETWEEN est.fecha_desde AND est.fecha_hasta) 
+AND ('30' >= cas.tiempo_minimo) AND ('30' <= cas.tiempo_maximo) GROUP BY cas.id_casa;
+
