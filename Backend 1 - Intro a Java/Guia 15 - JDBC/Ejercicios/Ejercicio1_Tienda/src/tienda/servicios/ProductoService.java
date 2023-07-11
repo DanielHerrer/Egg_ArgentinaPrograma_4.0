@@ -3,6 +3,9 @@ package tienda.servicios;
 import java.util.Collection;
 import java.util.Scanner;
 
+// exceptions creadas
+import tienda.entidades.exceptions.EmptyNameException;
+
 import tienda.entidades.Fabricante;
 import tienda.entidades.Producto;
 import tienda.persistencia.FabricanteDAO;
@@ -17,37 +20,31 @@ public class ProductoService {
         dao = new ProductoDAO();
     }
     
-    public void crearProducto(String nombre, Double precio, Fabricante fabricante) throws Exception {
-        try {
-        
-            // Validamos
-            if(nombre == null || nombre.trim().isEmpty()){
-                throw new Exception("El campo Nombre es obligatorio");
-            }
-            if(dao.buscarProductoPorNombre(nombre) != null){
-                throw new Exception("Ya existe un producto con el nombre indicado.");
-            }
-            if(precio == null){
-                throw new Exception("El campo Precio es obligatorio");
-            }else if(precio.equals(0.0) || precio < 0.0 || precio.isNaN()){
-                throw new Exception("El precio es incorrecto");
-            }
-            if(fabricante == null){
-                throw new Exception("El campo Fabricante es obligatorio");
-            }
-
-            // Creamos el producto
-            Producto producto = new Producto();
-            producto.setNombre(nombre);
-            producto.setPrecio(precio);
-            producto.setFabricante(fabricante);
-
-            // Guarda el producto en la database
-            dao.guardarProducto(producto);  
-
-        } catch(Exception e) {
-            throw e;
+    public void crearProducto(String nombre, Double precio, Fabricante fabricante) throws Exception, EmptyNameException {
+        // Validamos
+        if(nombre == null || nombre.trim().isEmpty()){
+            throw new EmptyNameException("El campo Nombre es obligatorio");
         }
+        if(dao.buscarProductoPorNombre(nombre) != null){
+            throw new Exception("Ya existe un producto con el nombre indicado.");
+        }
+        if(precio == null){
+            throw new Exception("El campo Precio es obligatorio");
+        }else if(precio.equals(0.0) || precio < 0.0 || precio.isNaN()){
+            throw new Exception("El precio es incorrecto");
+        }
+        if(fabricante == null){
+            throw new Exception("El campo Fabricante es obligatorio");
+        }
+
+        // Creamos el producto
+        Producto producto = new Producto();
+        producto.setNombre(nombre);
+        producto.setPrecio(precio);
+        producto.setFabricante(fabricante);
+
+        // Guarda el producto en la database
+        dao.guardarProducto(producto);
     }
 
     public void eliminarProducto() throws Exception {
@@ -171,7 +168,12 @@ public class ProductoService {
 
             crearProducto(nombre, precio, fabricante);
 
-        }catch(Exception e){
+        } catch(EmptyNameException emp) {
+            System.out.println("Buenas, no hay nombre chabon");
+            emp.printStackTrace();
+            ejecutarNuevoProducto();
+
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }

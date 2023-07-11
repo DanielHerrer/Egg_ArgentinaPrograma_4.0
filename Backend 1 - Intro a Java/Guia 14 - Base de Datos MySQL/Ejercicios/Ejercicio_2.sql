@@ -173,6 +173,3 @@ SELECT fabr.nombre AS nombre_fabricante FROM fabricante fabr
 SELECT fabr.nombre FROM fabricante fabr 
 	HAVING (SELECT COUNT(*) FROM producto WHERE producto.codigo_fabricante = fabr.codigo) = 
 		(SELECT COUNT(*) FROM producto WHERE producto.codigo_fabricante = (SELECT codigo FROM fabricante WHERE fabricante.nombre LIKE "%Lenovo%"));
-
-
-

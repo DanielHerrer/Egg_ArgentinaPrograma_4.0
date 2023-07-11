@@ -1,0 +1,16 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar"
+        ],
+        "exclude": [
+            "lib/javax.persistence.jar",
+            "lib/eclipselink-2.0.2.jar",
+            "lib/org.eclipse.persistence.jpa.jpql-2.4.2.jar"
+        ]
+    }
+}

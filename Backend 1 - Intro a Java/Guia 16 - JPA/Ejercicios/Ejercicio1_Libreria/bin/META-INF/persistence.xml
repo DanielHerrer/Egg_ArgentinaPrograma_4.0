@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+
+    <persistence-unit name="LibroJPA" transaction-type="RESOURCE_LOCAL">
+        <!-- Aquí debes especificar el proveedor de persistencia que utilizarás. -->
+        <!-- En este caso, usaremos EclipseLink. -->
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        
+        <!-- Aquí puedes listar todas las clases de entidad que utilizarás en tu proyecto -->
+        <class>libreria.entidades.Libro</class>
+        <class>libreria.entidades.Autor</class>
+        <class>libreria.entidades.Editorial</class>
+        
+        <!-- Configuración de la base de datos -->
+        <properties>
+            <!-- URL de la base de datos -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/libreria"/>
+            
+            <!-- Usuario y contraseña para acceder a la base de datos -->
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            
+            <!-- Controlador de la base de datos para MySQL -->
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            
+            <!-- Otras propiedades de configuración -->
+        </properties>
+    </persistence-unit>
+
+</persistence>

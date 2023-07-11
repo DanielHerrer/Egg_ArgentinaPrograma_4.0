@@ -25,7 +25,7 @@ public abstract class DAO {
             String url_DB = "jdbc:mysql://localhost:3306/" + DATABASE + "?useSSL=false";
             conexion = DriverManager.getConnection(url_DB, USER, PASSWORD);
         }catch(ClassNotFoundException | SQLException ex){
-            throw ex;
+            ex.printStackTrace();
         }
     }
 
