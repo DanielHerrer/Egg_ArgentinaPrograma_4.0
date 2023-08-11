@@ -1,0 +1,21 @@
+/* font-family: 'Montserrat', sans-serif; */
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: rgb(65, 48, 80);
+}
+
+.titulo-principal {
+    text-align: center;
+    color: #fff;
+}
+
+.titulo-secundario {
+    text-align: center;
+    color: #fff;
+}
+
+.parrafo {
+    text-align: left;
+    color: aqua;
+}

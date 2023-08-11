@@ -1,0 +1,57 @@
+#titulo {
+    color: rgb(8, 114, 82);
+}
+
+span.destacado {
+    color: rgb(199, 163, 44);
+}
+
+#subtitulo {
+    color: blue;
+}
+
+a {
+    color: #ff0000;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #000;
+}
+
+td, th {
+    border: 1px solid #000;
+    padding: 8px; 
+}
+
+table thead .especial {
+    color: red;
+}
+
+table tbody tr:first-child th {
+    color: yellow;
+}   
+
+table tbody tr td {
+    color: green;
+}
+
+table tbody tr:last-child th {
+    color: red;
+}
+
+table tfoot tr th {
+    color: red;
+}
+
+#adicional {
+    color: rgb(178, 204, 82);
+}
+
+#adicional #especial {
+    color: rgb(219, 36, 143);
+}
+
+#adicional p:last-child a {
+    color: #09881a;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 6</title>
+</head>
+<body>
+    <h1>Registrar un usuario!</h1>
+    <form action="#">
+        <label for="nombre">Nombre del usuario:</label><br>
+        <input type="text" id="nombre" placeholder="Ingrese su nombre" required><br>
+
+        <label for="contrasena">Contraseña del usuario:</label><br>
+        <input type="password" id="contrasena" placeholder="Ingrese su contraseña" required><br>
+
+        <label for="edad">Edad del usuario:</label><br>
+        <input type="text" id="edad" placeholder="Ingrese su edad" required><br>
+
+        <label for="fecha-nacimiento">Fecha de nacimiento del usuario:</label><br>
+        <input type="date" id="fecha-nacimiento" required><br>
+
+        <label for="sexo">Sexo del usuario:</label><br>
+        <label for="hombre">
+            <input type="radio" name="sexo" id="hombre" value="hombre">
+            Hombre
+        </label><br>
+
+        <label for="mujer">
+            <input type="radio" name="sexo" id="mujer" value="mujer">
+            Mujer
+        </label><br>
+
+        <label for="no-decir">
+            <input type="radio" name="sexo" id="no-decir" value="no-decir">
+            Prefiero no decir
+        </label><br>
+
+        <label for="pais-nacimiento">Pais nacimiento del usuario:</label><br>
+        <select id="pais-nacimiento" required>
+            <option value="">Seleccione un país</option>
+            <option value="Argentina">Argentina</option>
+            <option value="Brasil">Brasil</option>
+            <option value="Chile">Chile</option>
+            <option value="Colombia">Colombia</option>
+            <option value="México">México</option>
+        </select><br>
+
+        <button type="submit">Enviar</button> <button type="reset">Borrar</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lugrasimo', cursive;
+}
+
+.header {
+    background-color: green;
+    text-align: center;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.logo {
+    max-width: 100%;
+}
+
+.barra-nav ul li {
+    display: inline-block;
+}
+
+.main {
+    background-color: yellow;
+    height: 80vh; /* 80% */
+    text-align: center;
+}
+
+/* .main img {
+    
+} */
+
+.footer {
+    background-color: red;
+    height: 10vh; /* 10% */
+    text-align: center;
+}

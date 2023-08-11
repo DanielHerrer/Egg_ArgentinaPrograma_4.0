@@ -25,4 +25,4 @@ CREATE TABLE IF NOT EXISTS Libro (
     alta BOOLEAN
 );
 
--- INSERT INTO equipos VALUES ('Celtics','Boston','East','Atlantic');
+INSERT INTO Autor VALUES (1,'Daniel',null);
