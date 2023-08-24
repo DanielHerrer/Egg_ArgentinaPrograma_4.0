@@ -1,0 +1,16 @@
+Ejercicios Extras
+1. Realizar un programa que solicite al usuario ingresar una lista de números separados por comas y luego muestre por pantalla el mayor y el menor número de la lista.
+2. Escribir un programa que solicite al usuario ingresar una frase y luego muestre por pantalla cuántas vocales contiene la frase.
+3. Crear una función que reciba un arreglo de números y devuelva la suma de todos los elementos del arreglo.
+4. Realizar un programa que, dado un número entero ingresado por el usuario, muestre todos los números primos menores o iguales a ese número.
+5. Escribir una función que reciba un número entero como parámetro y devuelva la suma de todos los números pares desde 1 hasta el número ingresado.
+6. Escribir una función que reciba un número entero y devuelva true si es un número primo, o false en caso contrario.
+7. Realizar un programa que muestre por pantalla los primeros 10 números de la serie de Fibonacci.
+8. Escribir una función que reciba un arreglo de números y devuelva un nuevo arreglo con los elementos ordenados de forma ascendente.
+9. Crear un programa que solicite al usuario ingresar una lista de palabras separadas por espacios y luego muestre por pantalla las palabras que tienen una longitud mayor a 5 caracteres.
+10. Escribir una función que reciba un arreglo de números y devuelva un nuevo arreglo con los elementos elevados al cuadrado.
+11. Realizar un programa que solicite al usuario ingresar un número entero y luego muestre por pantalla todos los números primos menores a ese número.
+12. Escribir una función que reciba dos arreglos de números y devuelva un nuevo arreglo con los elementos que se encuentran en ambos arreglos.
+13. Crear un programa que solicite al usuario ingresar una lista de números separados por espacios y luego muestre por pantalla el promedio de esos números.
+14. Escribir una función que reciba un número entero y devuelva true si es un número palíndromo (se lee igual de izquierda a derecha que de derecha a izquierda), o false en caso contrario.
+15. Realizar un programa que solicite al usuario ingresar una frase y luego muestre por pantalla la misma frase pero con todas las palabras en mayúsculas.
