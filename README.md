@@ -4,8 +4,8 @@ Repositorio donde guardo material y ejercicios de cada guia,
 proveido por el campus de Egg Cooperation apoyado por Argentina Programa 4.0.
 Una beca dirigida a la formación como Full Stack Dev Trainee.
 
-<h5>Programacion Desde Cero</h5>
-<ul style="list-style-type: cyrcle;">
+<h3>Programacion Desde Cero</h3>
+<ul style="list-style-type: circle;">
   <li>Guia 01 => Intro</li>
   <li>Guia 02 => Estructuras Selectivas</li>
   <li>Guia 03 => Estructuras Repetitivas</li>
@@ -15,8 +15,8 @@ Una beca dirigida a la formación como Full Stack Dev Trainee.
   <li>Integrador Final</li>
 </ul>
 
-<h5>Full Stack Dev Trainee</h5>
-<ul style="list-style-type: cyrcle;">
+<h3>Full Stack Dev Trainee</h3>
+<ul style="list-style-type: circle;">
   <li>Guia 01 => GitHub I</li>
   <li>Guia 02 => Intro a Java</li>
   <li>Guia 03 => Estructuras de control</li>
