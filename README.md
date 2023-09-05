@@ -1,3 +1,5 @@
+<img src="banner_egg.jpg">
+
 # Egg Argentina Programa 4.0
 .
 Repositorio donde guardo material y ejercicios de cada guia, 
