@@ -1,8 +1,10 @@
+<img src="banner_egg.jpg">
+
 # Egg Argentina Programa 4.0
-.
-Repositorio donde guardo material y ejercicios de cada guia, 
-proveido por el campus de Egg Cooperation apoyado por Argentina Programa 4.0.
-Una beca dirigida a la formación como Full Stack Dev Trainee.
+
+Repositorio del material y ejercicios de cada guia 
+proveida por el campus de Egg Cooperation sustentado por Argentina Programa 4.0
+Dirigido a la formación como 'Full Stack Developer'.
 
 <h2>Programacion Desde Cero</h2>
 <ul>
@@ -15,7 +17,7 @@ Una beca dirigida a la formación como Full Stack Dev Trainee.
   <li><b>Exámen Integrador</b></li>
 </ul>
 
-<h2>Full Stack Dev Trainee</h2>
+<h2>Full Stack Dev</h2>
 <ul>
   <li>Guia 01 => GitHub I</li>
   <li>Guia 02 => Intro a Java</li>
