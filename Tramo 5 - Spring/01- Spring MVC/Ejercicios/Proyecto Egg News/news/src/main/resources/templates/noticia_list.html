@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Egg News · Lista</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link th:href="@{/static/css/main.css}" rel="stylesheet">
+    </head>
+    <body>
+        <header class="p-3 bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <div clss="d-flex">
+                        <img th:src="@{/static/img/imgEgg1.png}" style="height: 50px;" alt="icono Egg">
+                        <h1 class="text-white">Egg News</h1>
+                    </div>
+<!--                    <div>-->
+<!--                        <a th:href="@{/noticias/lista}"><button type="button" class="btn btn-warning">Admin</button></a>-->
+<!--                    </div>-->
+                    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link nav-objeto text-white" th:href="@{/noticias/}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-objeto nav-activo" th:href="@{/noticias/lista}">Lista</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-objeto text-white" th:href="@{/noticias/registrar}">Registrar</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <div class="bg-body-tertiary">
+            <div class="container">
+
+                <main>
+                    <div id="content">
+                        <h2 class="title m-3">Lista de Noticias</h2>
+
+                        <ul id="list-noticias"  class="list-group">
+                        
+                            <li th:each="noticia : ${noticias}" class="list-group-item d-flex justify-content-between align-items-center">
+                                <h5 class="text-secondary" th:text="${noticia.titulo}">Noticia 1: </h5>
+                                <span class="badge bg-primary rounded-pill" th:text="${noticia.fecha}">FECHA: </span>
+                                <div class="btn-group">
+                                    <button class="btn btn-warning my-2 float-end">Modificar</button>
+                                    <button class="btn btn-danger my-2 float-end">Eliminar</button>
+                                </div>
+                            </li>
+                    
+                        </ul>
+                    
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </body>
+</html>
