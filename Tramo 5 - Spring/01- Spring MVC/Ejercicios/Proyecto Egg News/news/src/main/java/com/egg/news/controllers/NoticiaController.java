@@ -2,13 +2,13 @@ package com.egg.news.controllers;
 
 import com.egg.news.entities.Noticia;
 import com.egg.news.exceptions.MyException;
+import com.egg.news.repositories.NoticiaRepository;
 import com.egg.news.services.NoticiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -17,9 +17,11 @@ public class NoticiaController {
 
     @Autowired
     private NoticiaService noticiaService;
+    @Autowired
+    private NoticiaRepository noticiaRepository;
 
     @GetMapping("/") // localhost:8080/noticias/
-    public String inicio(ModelMap modelo) {
+    public String inicio (ModelMap modelo) {
         List<Noticia> noticias = noticiaService.listarNoticias();
 
         modelo.addAttribute("noticias", noticias);
@@ -40,14 +42,15 @@ public class NoticiaController {
 
         } catch (MyException e) {
             modelo.put("error",e.getMessage());
-            return "noticia_form.html";
+
         }
 
         return "noticia_form.html";
     }
 
-    @GetMapping("/lista")
+    @GetMapping("/listar") // localhost:8080/noticias/listar
     public String listar(ModelMap modelo) {
+
         List<Noticia> noticias = noticiaService.listarNoticias();
 
         modelo.addAttribute("noticias", noticias);
@@ -55,10 +58,13 @@ public class NoticiaController {
         return "noticia_list.html";
     }
 
-    @GetMapping("/modificar/{id}")
+    @GetMapping("/modificar/{id}") // localhost:8080/noticias/modificar/abc-123-def-456-ghi-789
     public String modificar(@PathVariable String id, ModelMap modelo) {
 
-        modelo.put("noticia", noticiaService.listarPorId(id));
+        Noticia noticia = noticiaService.listarPorId(id);
+
+        modelo.put("noticia", noticia);
+        // Trae a la ventana de modificacion la noticia por su ID
         return "noticia_modificar.html";
     }
 
@@ -66,12 +72,32 @@ public class NoticiaController {
     public String modificar(@PathVariable String id, String titulo, String cuerpo, ModelMap modelo) {
         try {
             noticiaService.modificarNoticia(id, titulo, cuerpo);
-            return "redirect:../lista"; // ../lista => noticia/lista
+            return "redirect:../listar"; // ../listar => noticias/listar
 
         } catch (MyException e) {
             modelo.put("error", e.getMessage());
             return "noticia_modificar.html";
         }
+    }
+
+    // @DeleteMapping("/eliminar/{id}")
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable String id, ModelMap modelo) {
+
+        try {
+
+            noticiaService.eliminarNoticia(id);
+            modelo.put("exito", "La Noticia se ha eliminado correctamente!");
+
+            List<Noticia> noticias = noticiaService.listarNoticias();
+            modelo.addAttribute("noticias", noticias);
+
+        } catch (MyException e) {
+            modelo.put("error",e.getMessage());
+
+        }
+
+        return "noticia_list.html";
     }
 
 }

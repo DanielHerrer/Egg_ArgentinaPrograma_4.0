@@ -21,7 +21,20 @@ public class Noticia {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime fecha;
 
+    private Boolean activo;
+
     public Noticia() {}
+
+    public Noticia(String titulo, String cuerpo) {
+        this.titulo = titulo;
+        this.cuerpo = cuerpo;
+        fecha = LocalDateTime.now();
+        activo = true;
+    }
+
+    public void desactivarNoticia() {
+        this.activo = false;
+    }
 
     public String getId() {
         return id;
@@ -29,12 +42,6 @@ public class Noticia {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Noticia(String titulo, String cuerpo) {
-        this.titulo = titulo;
-        this.cuerpo = cuerpo;
-        fecha = LocalDateTime.now();
     }
 
     public String getTitulo() {
@@ -60,4 +67,13 @@ public class Noticia {
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
 }

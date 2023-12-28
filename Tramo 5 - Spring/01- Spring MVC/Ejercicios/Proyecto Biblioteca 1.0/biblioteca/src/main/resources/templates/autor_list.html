@@ -96,21 +96,19 @@
 
     <table class="table table-dark">
         <thead>
-        <tr>
-            <th scope="col">Id del Autor</th>
-            <th scope="col">Nombre del Autor</th>
-            <th scope="col" sec:authorize="hasRole('ADMIN')" >Acciones</th>
-
-        </tr>
-        </thead>
-        <tbody th:each="autor : ${autores}">
             <tr>
+                <th scope="col">Id del Autor</th>
+                <th scope="col">Nombre del Autor</th>
+                <th scope="col" sec:authorize="hasRole('ADMIN')" >Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="autor : ${autores}">
                 <th scope="row" th:text="${autor.id}"></th>
                 <td th:text="${autor.nombre}"></td>
                 <td>
                     <a sec:authorize="hasRole('ADMIN')" th:href= "@{/autor/modificar/__${autor.id}__}"><i class="fas fa-feather-alt"></i> Modificar </a>
                 </td>
-
             </tr>
         </tbody>
     </table>

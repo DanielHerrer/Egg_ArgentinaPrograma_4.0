@@ -27,13 +27,16 @@ public class NoticiaService {
         noticia.setTitulo(titulo);
         noticia.setCuerpo(cuerpo);
         noticia.setFecha(LocalDateTime.now());
+        noticia.setActivo(true);
 
         noticiaRepository.save(noticia);
     }
 
     public List<Noticia> listarNoticias() {
-        List<Noticia> noticias = new ArrayList<>();
-        noticias = noticiaRepository.findAll();
+        List<Noticia> noticias;
+//        noticias = noticiaRepository.findByActivoTrue();
+//        noticias = noticiaRepository.findAll();
+        noticias = noticiaRepository.findByFechaDesc();
 
         return noticias;
     }
@@ -53,7 +56,7 @@ public class NoticiaService {
         }
     }
 
-    public Noticia listarPorId(String id) {
+    public Noticia listarPorId (String id) {
         return noticiaRepository.getOne(id);
     }
 
@@ -68,4 +71,19 @@ public class NoticiaService {
         }
 
     }
+
+    public void eliminarNoticia (String id) throws MyException {
+
+        Optional<Noticia> respuesta = noticiaRepository.findById(id);
+
+        if (respuesta.isPresent()) {
+
+            Noticia noticia = respuesta.get();
+
+            noticia.desactivarNoticia(); // Eliminacion logica
+
+            noticiaRepository.save(noticia);
+        }
+    }
+
 }

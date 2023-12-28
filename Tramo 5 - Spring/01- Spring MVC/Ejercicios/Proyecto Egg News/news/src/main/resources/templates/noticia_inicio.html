@@ -23,7 +23,7 @@
                 <a class="nav-link nav-objeto nav-activo" th:href="@{/noticias/}">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link nav-objeto text-white" th:href="@{/noticias/lista}">Lista</a>
+                <a class="nav-link nav-objeto text-white" th:href="@{/noticias/listar}">Lista</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link nav-objeto text-white" th:href="@{/noticias/registrar}">Registrar</a>
@@ -46,7 +46,7 @@
                 <p class="card-cuerpo" th:text="${noticia.cuerpo}">Texto del cuerpo de la noticia donde se indicara todos los acometidos, pruebas, testigos y conclusiones con toda su informacion.</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <button type="button" class="btn btn-sm btn-outline-secondary">Ver noticia</button>
-                  <small class="card-fecha text-body-secondary" th:text="${noticia.fecha}">Fecha: </small>
+                  <small class="card-fecha text-body-secondary" th:text="${#temporals.format(noticia.fecha, 'dd/MM/yyyy HH:mm')}">Fecha: </small>
                 </div>
               </div>
             </div>

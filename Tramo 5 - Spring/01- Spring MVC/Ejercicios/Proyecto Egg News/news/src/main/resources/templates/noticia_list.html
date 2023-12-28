@@ -24,7 +24,7 @@
                                 <a class="nav-link nav-objeto text-white" th:href="@{/noticias/}">Inicio</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link nav-objeto nav-activo" th:href="@{/noticias/lista}">Lista</a>
+                                <a class="nav-link nav-objeto nav-activo" th:href="@{/noticias/listar}">Lista</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link nav-objeto text-white" th:href="@{/noticias/registrar}">Registrar</a>
@@ -45,11 +45,13 @@
                         <ul id="list-noticias"  class="list-group">
                         
                             <li th:each="noticia : ${noticias}" class="list-group-item d-flex justify-content-between align-items-center">
-                                <h5 class="text-secondary" th:text="${noticia.titulo}">Noticia 1: </h5>
-                                <span class="badge bg-primary rounded-pill" th:text="${noticia.fecha}">FECHA: </span>
-                                <div class="btn-group">
-                                    <button class="btn btn-warning my-2 float-end">Modificar</button>
-                                    <button class="btn btn-danger my-2 float-end">Eliminar</button>
+                                <h5 class="text-secondary" th:text="${noticia.titulo}">Noticia: </h5>
+                                <div>
+                                    <span th:text="${#temporals.format(noticia.fecha, 'dd/MM/yyyy HH:mm')}" class="badge bg-primary rounded-pill mx-2">FECHA: </span>
+                                    <div class="btn-group">
+                                        <a th:href= "@{/noticias/modificar/__${noticia.id}__}" class="btn btn-warning my-2 float-end">Modificar</a>
+                                        <a th:href= "@{/noticias/eliminar/__${noticia.id}__}" class="btn btn-danger my-2 float-end">Eliminar</a>
+                                    </div>
                                 </div>
                             </li>
                     

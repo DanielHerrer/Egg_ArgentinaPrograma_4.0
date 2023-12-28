@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Egg News · Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link th:href="@{/static/css/main.css}" rel="stylesheet">
+</head>
+<body>
+
+<header class="p-3 bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center">
+            <div clss="d-flex">
+                <img th:src="@{/static/img/imgEgg1.png}" style="height: 50px;" alt="icono Egg">
+                <h1 class="text-white">Egg News</h1>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link nav-objeto text-white" th:href="@{/noticias/}">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-objeto text-white" th:href="@{/noticias/listar}">Lista</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-objeto text-white" th:href="@{/noticias/registrar}">Registrar</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+
+        <div>
+            <h2>Modificar noticia</h2>
+            <form class="formulario" th:action="@{/noticias/modificar/__${noticia.id}__}" method="POST">
+
+                <input hidden th:value="${id}" name="id">
+
+                <div class="form-group my-3">
+
+                    <label class="mb-2">Titulo</label>
+
+                    <input th:value="${noticia.titulo}" type="text" class="form-control" name="titulo">
+
+                    <label class="mb-2">Cuerpo</label>
+
+                    <input th:value="${noticia.cuerpo}" type="text" class="form-control" name="cuerpo">
+
+                    <label class="mb-2">Fecha</label>
+                    <!-- El formato ayuda a que se imprima como '27/3/2023 16:15' en vez de '2023-3-27T16:15:55' -->
+                    <input th:value="${#temporals.format(noticia.fecha, 'dd/MM/yyyy HH:mm')}" type="text" class="form-control" name="fecha" readonly>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3 botones">Confirmar</button>
+
+            </form>
+
+            <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
+                <div class="card-body">
+                    <h5 class="card-title">Exito</h5>
+                    <p class="card-text" th:text="${exito}"></p>
+                </div>
+            </div>
+            <div th:if="${error}!=null" class="card text-white bg-danger mb-3 mensajeError" >
+                <div class="card-body">
+                    <h5 class="card-title">Error</h5>
+                    <p class="card-text" th:text="${error}"></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>
